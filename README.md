@@ -4,6 +4,8 @@ Python + GTK3 + GStreamer SDK
 The goal of this SDK is to make it easier to package python applications that
 use GTK3+GStreamer.
 
+* To build applications for OSX, see the osx_bundle directory
+* To build applications for Windows, see the win_bundle directory
 
 Authors
 =======

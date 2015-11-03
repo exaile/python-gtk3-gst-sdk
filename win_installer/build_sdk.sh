@@ -13,12 +13,9 @@ download_and_verify;
 
 init_wine;
 init_build_env;
-extract_deps;
 
+extract_deps;
 setup_deps;
-install_python;
-install_pydeps;
-install_git;
 
 cleanup;
 setup_sdk;

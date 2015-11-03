@@ -1,6 +1,6 @@
-==============
-QL Windows SDK
-==============
+=====================================
+Python + GTK3 + GStreamer Windows SDK
+=====================================
 
 This package consists of all runtime dependencies & git.
 

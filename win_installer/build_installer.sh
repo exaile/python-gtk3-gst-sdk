@@ -20,14 +20,10 @@ function build_all {
     init_wine;
     init_build_env;
     clone_repo "$GIT_TAG";
+
     extract_deps;
-
     setup_deps;
-    install_python;
-    install_pydeps;
-    install_7zip;
-    install_nsis;
-
+    
     cleanup;
     build_quodlibet;
 }

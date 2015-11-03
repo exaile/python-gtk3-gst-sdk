@@ -1,12 +1,11 @@
-====================
-QL Windows Installer
-====================
+===========
+Windows SDK
+===========
 
 Requirements:
 
 * 7zip
 * wine (tested with 1.6.1)
-* QL build deps
 * wget
 * git
 * 1.5GB free space
@@ -27,3 +26,22 @@ SDK Environment
 
 After running build_sdk.sh, ./_sdk contains a development environment
 including all dependencies and the needed launchers.
+
+
+Target stuff
+------------
+
+Required files:
+
+* deps.txt: line-delimited file of binary dependencies to download
+* requirements.txt: pip file of python dependencies to download + install
+* hashes.txt: sha256sum checksums of files
+
+Optional files:
+
+* install_deps.sh: files are in $TARGET_BIN
+
+SDK scripts
+
+* Any files in the target/sdk_scripts will be linked to the built SDK directory
+  so that you can provide test, build, etc scripts specific to your app
