@@ -1,1 +1,1 @@
-pyinstaller==3.0.0
+#TODO: git+https://github.com/virtuald/pyinstaller.git@gtk

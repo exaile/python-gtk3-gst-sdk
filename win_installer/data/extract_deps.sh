@@ -17,6 +17,7 @@ for name in rtvc9-32 noarch; do
     cp -RT "$PYGI"/"$name"/Base/gnome "$DEPS"
 
     cp -RT "$PYGI"/"$name"/JPEG/gnome "$DEPS"
+    cp -RT "$PYGI"/"$name"/TIFF/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/WebP/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/Jasper/gnome "$DEPS"
 
@@ -35,6 +36,7 @@ for name in rtvc9-32 noarch; do
     cp -RT "$PYGI"/"$name"/Jack/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/SQLite/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/GSTPlugins/gnome "$DEPS"
+    cp -RT "$PYGI"/"$name"/HarfBuzz/gnome "$DEPS"
 
     cp -RT "$PYGI"/"$name"/OpenJPEG/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/OpenEXR/gnome "$DEPS"

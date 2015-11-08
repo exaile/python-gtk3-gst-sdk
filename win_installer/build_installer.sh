@@ -5,7 +5,7 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
+DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
 BUILD_ENV_SUFFIX="_installer"
 source "$DIR"/_base.sh
 

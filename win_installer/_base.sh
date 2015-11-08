@@ -11,10 +11,10 @@ trap 'exit 1' SIGINT;
 # Data directory for program that is getting packaged
 TARGET=$(pwd)
 
-[ -f deps.txt ] || (echo "deps.txt not found! Are you calling this from the target directory?" && exit 1)
-[ -f hashes.txt ] || (echo "hashes.txt not found! Are you calling this from the target directory?" && exit 1)
+[ -f deps.txt ] || (echo "deps.txt not found! Are you calling this from the target directory and is the target project setup properly?" && exit 1)
+[ -f hashes.txt ] || (echo "hashes.txt not found! Are you calling this from the target directory and is the target project setup properly?" && exit 1)
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
+DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
 
 SDK_BIN="$DIR"/_bin
 SDK_DATA="$DIR"/data
@@ -217,7 +217,7 @@ function setup_sdk {
     ln -s "$SDK" "$TARGET"/_sdk
 
     # create the distributable archive
-    echo "Creating distribution tarball"
+    echo "Creating distribution tarball (ctrl-c if you don't care)"
     tar --dereference -zcvf "$TARGET"/python-gtk3-gst-sdk.tar.gz _sdk/ \
         --exclude=_sdk/_wine_prefix &> /dev/null
 }

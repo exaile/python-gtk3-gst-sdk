@@ -28,7 +28,7 @@ function install_python {
 }
 
 function install_git {
-  echo "WTF"
+
     local DISPLAY_OLD=$DISPLAY
     export DISPLAY=$DISPLAY_SAVED
     # this needs a valid DISPLAY..
