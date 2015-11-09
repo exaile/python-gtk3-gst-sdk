@@ -11,13 +11,35 @@ trap 'exit 1' SIGINT;
 # Data directory for program that is getting packaged
 TARGET=$(pwd)
 
-[ -f deps.txt ] || (echo "deps.txt not found! Are you calling this from the target directory and is the target project setup properly?" && exit 1)
-[ -f hashes.txt ] || (echo "hashes.txt not found! Are you calling this from the target directory and is the target project setup properly?" && exit 1)
+#
+# Valdiate project configuration
+#
+
+[ -f project.config ] || (echo "project.config not found! Are you calling this from the target directory and is the target project setup properly?" && exit 1)
+source project.config
+
+function _check_project_var {
+  local NOT_SET="${1}_NOT_SET"
+  if [[ "$2" == "1" && "${!NOT_SET}" == "1" ]]; then
+    echo
+  elif [ -z "${!1}" ]; then
+    echo "ERROR: $1 was not set in project.config"
+    if [ "$2" == "1" ]; then
+      echo "-- if you don't need to set it, set $1_NOT_SET=1"
+    fi
+    exit 1
+  fi
+}
+
+_check_project_var DOWNLOAD_FILES 1
+_check_project_var DOWNLOAD_HASHES 1
+_check_project_var GIT_CLONE_URL
 
 DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
 
 SDK_BIN="$DIR"/_bin
 SDK_DATA="$DIR"/data
+SDK_MISC="$DIR"/misc
 SDK_SCRIPTS="$DIR"/sdk_scripts
 
 TARGET_BIN="$TARGET"/_bin
@@ -26,44 +48,36 @@ TARGET_DATA="$TARGET"
 BUILD_ENV="$TARGET"/_build_env"$BUILD_ENV_SUFFIX"
 DEPS="$BUILD_ENV"/deps
 
-#QL_REPO="$DIR"/..
-#BUILD_BAT="$MISC"/build.bat
-#INST_ICON="$MISC"/quodlibet.ico
-#NSIS_SCRIPT="$MISC"/win_installer.nsi
-
-#QL_REPO_TEMP="$BUILD_ENV"/ql_temp
-#QL_TEMP="$QL_REPO_TEMP"/quodlibet
-
-
-PYGI_AIO_VER="3.14.0_rev22"
+source "$SDK_DATA"/sdk.config
 
 
 function _download_and_verify {
-  THISBIN="$1"
-  THISDATA="$2"
+  local THISBIN="$1"
+  local THISDATA="$2"
+  local HASHES="$3"
+  local DOWNLOADS="$4"
   
   mkdir -p "$THISBIN"
   
-  if (cd "$THISBIN" && cat "$THISDATA"/hashes.txt | sha256sum --status --strict -c -); then
+  if [ -z "$HASHES" ] || (cd "$THISBIN" && echo "$HASHES" | sha256sum --status --strict -c -); then
     echo "all installers present in $THISBIN, continue.."
   else
-    for f in `cat "$THISDATA"/deps.txt`; do
-      wget -P "$THISBIN" -c "$f"
+    for f in $DOWNLOADS; do
+      [ -z "$f" ] || wget -P "$THISBIN" -c "$f"
     done
     
     [ -f "$THISDATA"/requirements.txt ] && pip install --download="$THISBIN" -r "$THISDATA"/requirements.txt
     
     # Make sure we got everything right
-    (cd "$THISBIN" && cat "$THISDATA"/hashes.txt | sha256sum --strict -c -) || exit
+    (cd "$THISBIN" && echo "$HASHES" | sha256sum --strict -c -) || exit
   fi
 }
 
 
 function download_and_verify {
-  
     # download all installers and check with sha256sum
-    _download_and_verify "$SDK_BIN" "$SDK_DATA"
-    _download_and_verify "$TARGET_BIN" "$TARGET_DATA"
+    _download_and_verify "$SDK_BIN" "$SDK_DATA" "$SDK_DOWNLOAD_HASHES" "$SDK_DOWNLOAD_FILES"
+    _download_and_verify "$TARGET_BIN" "$TARGET_DATA" "$DOWNLOAD_HASHES" "$DOWNLOAD_FILES"
 }
 
 function init_wine {
@@ -96,109 +110,35 @@ function init_build_env {
     #ln -s "$INST_ICON" "$BUILD_ENV"
 }
 
-# Argument 1: the git tag
-function clone_repo {
-
-    if [ -z "$1" ]
-    then
-        echo "missing arg"
-        exit 1
-    fi
-
-    # clone repo
-    git clone "$QL_REPO" "$QL_REPO_TEMP"
-    (cd "$QL_REPO_TEMP" && git checkout "$1") || exit 1
-    QL_VERSION=$(cd "$QL_TEMP" && python -c "import quodlibet.const;print quodlibet.const.VERSION,")
-
-    if [ "$1" = "master" ]
-    then
-        local GIT_REV=$(git rev-list --count HEAD)
-        local GIT_HASH=$(git rev-parse --short HEAD)
-        QL_VERSION="$QL_VERSION-rev$GIT_REV-$GIT_HASH"
-    fi
-}
 
 function extract_deps {
-  [ -f "$SDK_DATA"/extract_deps.sh ] && source "$SDK_DATA"/extract_deps.sh
-  [ -f "$TARGET_DATA"/extract_deps.sh ] && source "$TARGET_DATA"/extract_deps.sh
+  [ -f "$SDK_DATA"/_extract_deps.sh ] && source "$SDK_DATA"/_extract_deps.sh
+  [ -f "$TARGET_DATA"/_extract_deps.sh ] && source "$TARGET_DATA"/_extract_deps.sh
 }
 
 function setup_deps {
-  [ -f "$SDK_DATA"/setup_deps.sh ] && source "$SDK_DATA"/setup_deps.sh
-  [ -f "$TARGET_DATA"/setup_deps.sh ] && source "$TARGET_DATA"/setup_deps.sh
+  [ -f "$SDK_DATA"/_setup_deps.sh ] && source "$SDK_DATA"/_setup_deps.sh
+  [ -f "$TARGET_DATA"/_setup_deps.sh ] && source "$TARGET_DATA"/_setup_deps.sh
   
   install_pydeps
 }
 
+function _install_pydep {
+  # arg1: requirements.txt, arg2: output dir
+  local PYTHON="$PYDIR"/python.exe
+  if [ -f "$1" ]; then
+    sed 's/^#bindep\s*//' "$1" > "$1".tmp
+    (wine $PYTHON -m pip install -f "$2" -r "$1".tmp)
+    rm "$1".tmp
+  fi
+}
+
 function install_pydeps {
   local PYTHON="$PYDIR"/python.exe
-  
-  if [ -f "$SDK_DATA"/requirements.txt ]; then    
-    (wine $PYTHON -m pip install -f "$SDK_BIN" -r "$SDK_DATA"/requirements.txt)
-  fi
-  
-  if [ -f "$TARGET_DATA"/requirements.txt ]; then
-    (wine $PYTHON -m pip install -f "$TARGET_BIN" -r "$TARGET_DATA"/requirements.txt)
-  fi
+  _install_pydep "$SDK_DATA"/requirements.txt "$SDK_BIN"
+  _install_pydep "$TARGET_DATA"/requirements.txt "$TARGET_BIN"
 }
 
-function build_quodlibet {
-    (cd "$QL_TEMP" && python setup.py build_mo)
-
-    # now run py2exe etc.
-    (cd "$BUILD_ENV" && wine cmd /c build.bat)
-
-    QL_DEST="$QL_TEMP"/dist
-    QL_BIN="$QL_DEST"/bin
-
-    # python dlls
-    cp "$PYDIR"/python27.dll "$QL_BIN"
-
-    # copy deps
-    cp "$DEPS"/*.dll "$QL_BIN"
-    cp -R "$DEPS"/etc "$QL_DEST"
-    cp -R "$DEPS"/lib "$QL_DEST"
-    cp -R "$DEPS"/share "$QL_DEST"
-
-    # remove translatins we don't support
-    QL_LOCALE="$QL_TEMP"/build/share/locale
-    MAIN_LOCALE="$QL_DEST"/share/locale
-    python "$MISC"/prune_translations.py "$QL_LOCALE" "$MAIN_LOCALE"
-
-    # copy the translations
-    cp -RT "$QL_LOCALE" "$MAIN_LOCALE"
-
-    # remove various translations that are unlikely to be visible to the user
-    # in our case and just increase the installer size
-    find "$MAIN_LOCALE" -name "gtk30-properties.mo" -exec rm {} \;
-    find "$MAIN_LOCALE" -name "gsettings-desktop-schemas.mo" -exec rm {} \;
-    find "$MAIN_LOCALE" -name "iso_*.mo" -exec rm {} \;
-}
-
-function package_installer {
-    local NSIS_PATH=$(winepath "C:\\Program Files\\NSIS\\")
-    # now package everything up
-    (cd "$BUILD_ENV" && wine "$NSIS_PATH/makensis.exe" win_installer.nsi)
-    mv "$BUILD_ENV/quodlibet-LATEST.exe" "$DIR/quodlibet-$QL_VERSION-installer.exe"
-}
-
-function package_portable_installer {
-    local PORTABLE="$BUILD_ENV/quodlibet-$QL_VERSION-portable"
-    mkdir "$PORTABLE"
-
-    cp "$MISC"/quodlibet.lnk "$PORTABLE"
-    cp "$MISC"/exfalso.lnk "$PORTABLE"
-    cp "$MISC"/README-PORTABLE.txt "$PORTABLE"/README.txt
-    mkdir "$PORTABLE"/config
-    PORTABLE_DATA="$PORTABLE"/data
-    mkdir "$PORTABLE_DATA"
-    cp -RT "$QL_DEST" "$PORTABLE_DATA"
-    cp "$MISC"/conf.py "$PORTABLE_DATA"/bin/quodlibet/
-
-    wine "$SZIPDIR"/7z.exe a "$BUILD_ENV"/portable-temp.7z "$PORTABLE"
-    cat "$SZIPDIR"/7z.sfx "$BUILD_ENV"/portable-temp.7z > "$DIR/quodlibet-$QL_VERSION-portable.exe"
-    rm "$BUILD_ENV"/portable-temp.7z
-}
 
 function setup_sdk {
     SDK="$BUILD_ENV"/python-gtk3-gst-sdk
@@ -207,6 +147,9 @@ function setup_sdk {
     # launchers, README
     ln -s "$SDK_SCRIPTS"/* "$SDK"
     [ -d "$TARGET"/sdk_scripts ] && ln -s "$TARGET"/sdk_scripts/* "$SDK"
+    
+    # Create a clone script
+    echo "git clone $GIT_CLONE_URL" > "$SDK"/clone.bat
 
     # bin deps
     ln -s "$DEPS" "$SDK"/deps
@@ -218,12 +161,57 @@ function setup_sdk {
 
     # create the distributable archive
     echo "Creating distribution tarball (ctrl-c if you don't care)"
-    tar --dereference -zcvf "$TARGET"/python-gtk3-gst-sdk.tar.gz _sdk/ \
+    tar --dereference -zcvf "$TARGET"/python-gtk3-gst-win32-sdk.tar.gz _sdk/ \
         --exclude=_sdk/_wine_prefix &> /dev/null
 }
-
 
 function cleanup {
     # no longer needed, save disk space
     rm -Rf "$PYGI"
 }
+
+#
+# Utility functions for building installers
+#
+
+# Arg 1: directory where your frozen exe is
+# Arg 2: directory that contains your translations (*.mo files)
+function copy_pygi_data {
+   
+   local DIST="$1"
+   local PROJECT_LOCALE="$2"
+   
+   # copy deps that pyinstaller won't find
+   cp -R "$DEPS"/etc "$DIST"
+   cp -R "$DEPS"/lib "$DIST"
+   cp -R "$DEPS"/share "$DIST"
+
+   # remove unsupported GTK translations
+   MAIN_LOCALE="$DIST"/share/locale
+   if [ "$PROJECT_LOCALE" != "" ]; then
+     python "$SDK_MISC"/prune_translations.py "$PROJECT_LOCALE" "$MAIN_LOCALE"
+     
+     # copy the translations
+     cp -RT "$PROJECT_LOCALE" "$MAIN_LOCALE"
+   fi
+   
+   # remove various translations that are unlikely to be visible to the user
+   # in our case and just increase the installer size
+   find "$MAIN_LOCALE" -name "gtk30-properties.mo" -exec rm {} \;
+   find "$MAIN_LOCALE" -name "gsettings-desktop-schemas.mo" -exec rm {} \;
+   find "$MAIN_LOCALE" -name "iso_*.mo" -exec rm {} \;
+}
+
+
+# Arg 1: installer NSI path
+# After this function is called, the installer will be in $BUILD_ENV
+function package_installer {
+    local INSTALLER_NSI="$1"
+    local NSIS_PATH=$(winepath "C:\\Program Files\\NSIS\\")
+    
+    # now package everything up
+    (cd "$BUILD_ENV" && wine "$NSIS_PATH/makensis.exe" "$INSTALLER_NSI")
+    #mv "$BUILD_ENV/quodlibet-LATEST.exe" "$TARGET/quodlibet-$QL_VERSION-installer.exe"
+}
+
+

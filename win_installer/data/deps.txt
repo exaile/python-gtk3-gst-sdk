@@ -1,5 +1,0 @@
-http://downloads.sourceforge.net/project/nsis/NSIS%202/2.46/nsis-2.46-setup.exe
-https://www.python.org/ftp/python/2.7.10/python-2.7.10.msi
-http://downloads.sourceforge.net/sevenzip/7z920.msi
-https://bintray.com/artifact/download/exaile/pygobject/pygi-aio-3.14.0_rev22-setup.exe
-https://github.com/git-for-windows/git/releases/download/v2.6.2.windows.1/Git-2.6.2-32-bit.exe

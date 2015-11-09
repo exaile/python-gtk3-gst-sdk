@@ -1,1 +1,2 @@
-#TODO: git+https://github.com/virtuald/pyinstaller.git@gtk
+#bindep pypiwin32==219
+#bindep PyInstaller==3.1+exaile.1

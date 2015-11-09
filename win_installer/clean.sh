@@ -8,3 +8,4 @@
 rm -f _sdk
 rm -rf _build_env
 rm -rf _build_env_installer
+rm -rf _dist

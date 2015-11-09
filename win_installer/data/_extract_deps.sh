@@ -44,6 +44,7 @@ for name in rtvc9-32 noarch; do
     cp -RT "$PYGI"/"$name"/IDN/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/GSTPluginsExtra/gnome "$DEPS"
     cp -RT "$PYGI"/"$name"/GSTPluginsMore/gnome "$DEPS"
+    cp -RT "$PYGI"/"$name"/Graphene/gnome "$DEPS"
 done
 
 # remove ladspa, frei0r
