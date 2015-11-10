@@ -10,15 +10,25 @@ DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
 BUILD_ENV_SUFFIX="_installer"
 source "$DIR"/_base.sh
 
-download_and_verify;
+function init_install_env {
 
-init_wine;
-init_build_env;
+  download_and_verify;
 
-extract_deps;
-setup_deps;
+  init_wine;
+  init_build_env;
 
-cleanup;
+  extract_deps;
+  setup_deps;
+
+  cleanup;
+}
+
+if [ "$1" == "--reuse" ]; then
+  shift
+  init_wine
+else
+  init_install_env
+fi
 
 # This should actually build your installer
 source "$TARGET_DATA"/_build.sh

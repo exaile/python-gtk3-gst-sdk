@@ -183,7 +183,6 @@ function copy_pygi_data {
    
    # copy deps that pyinstaller won't find
    cp -R "$DEPS"/etc "$DIST"
-   cp -R "$DEPS"/lib "$DIST"
    cp -R "$DEPS"/share "$DIST"
 
    # remove unsupported GTK translations
@@ -210,7 +209,7 @@ function package_installer {
     local NSIS_PATH=$(winepath "C:\\Program Files\\NSIS\\")
     
     # now package everything up
-    (cd "$BUILD_ENV" && wine "$NSIS_PATH/makensis.exe" "$INSTALLER_NSI")
+    (cd "$BUILD_ENV" && wine "$NSIS_PATH/makensis.exe" $INSTALLER_NSI)
     #mv "$BUILD_ENV/quodlibet-LATEST.exe" "$TARGET/quodlibet-$QL_VERSION-installer.exe"
 }
 
