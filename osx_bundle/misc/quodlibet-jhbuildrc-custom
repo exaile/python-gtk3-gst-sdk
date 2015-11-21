@@ -17,4 +17,4 @@ disable_Werror = False
 skip.append("libiconv")
 
 setup_debug()
-setup_sdk(target="10.6", sdk_version="10.11", architectures=[_default_arch])
+setup_sdk(target="10.6", sdk_version="10.10", architectures=[_default_arch])

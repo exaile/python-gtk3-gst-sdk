@@ -24,7 +24,7 @@ Verify that Xcode and git is installed and in your ``$PATH`` by invoking ``git
 --version`` and ``gcc --version``. Also make sure that other pacakge managers
 like homebrew or macports aren't in your ``$PATH``.
 
-(Tested on OS X 10.9)
+(Tested on OS X 10.10)
 
 1) Call ``bootstrap.sh`` to install jhbuild and set up dummy ``$HOME`` as base.
 2) Call ``build.sh`` to download and build all the dependencies.
@@ -32,6 +32,7 @@ like homebrew or macports aren't in your ``$PATH``.
 3) Call ``bundle.sh`` to create the finished bundles for QL and EF in
    ``_build``.
 
+Note: XCode 7.x has some compile errors, but XCode 6.x works fine.
 
 Development
 -----------
