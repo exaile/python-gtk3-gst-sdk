@@ -9,7 +9,12 @@ modulesets_dir = os.environ["QL_OSXBUNDLE_MODULESETS_DIR"]
 moduleset = ["bootstrap", "quodlibet"]
 modules = []
 
+interact      = True # whether to interact with the user.
+quiet_mode    = True # whether to display running commands output(Builds)
+progress_bar  = True # whether to display a progress bar when running in quiet mode
+
 disable_Werror = False
 skip.append("libiconv")
 
-setup_sdk(target="10.6", sdk_version="native", architectures=[_default_arch])
+setup_debug()
+setup_sdk(target="10.6", sdk_version="10.11", architectures=[_default_arch])

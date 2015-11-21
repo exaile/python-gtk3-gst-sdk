@@ -10,6 +10,7 @@ trap 'exit 1' SIGINT;
 
 # Data directory for program that is getting packaged
 TARGET=$(pwd)
+SDK_PLATFORM="win32"
 
 #
 # Valdiate project configuration

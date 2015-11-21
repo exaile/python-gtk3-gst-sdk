@@ -48,7 +48,7 @@
 
   <autotools id="libtiff" autogen-sh="configure" autogenargs="--without-x">
     <branch version="4.0.3" module="libtiff/tiff-4.0.3.tar.gz"
-	    repo="libtiff"/>
+	    repo="libtiff"/> 
     <dependencies>
       <dep package="libjpeg"/>
     </dependencies>
@@ -90,7 +90,9 @@
 
   <autotools id="itstool" autogen-sh="configure">
     <branch module="itstool/itstool-2.0.2.tar.bz2" version="2.0.2"
-            repo="itstool"/>
+            repo="itstool">
+      <patch file="patches/itstool.use-correct-libxml.patch" strip="1"/>
+    </branch>
     <dependencies>
       <dep package="libxml2"/>
     </dependencies>
