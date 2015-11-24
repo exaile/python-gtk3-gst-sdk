@@ -31,8 +31,15 @@ if [ "$PLATFORM" == "windows" ]; then
   
   exit 0
 elif [ "$PLATFORM" == "osx" ]; then
-  echo "TODO"
-  exit 1
+  
+  for file in bootstrap.sh build_sdk.sh clean.sh env.sh misc; do 
+    [ -h $file ] && rm $file
+    ln -s "$DIR"/osx_bundle/$file $file
+  done
+
+  echo "Done! Use ./bootstrap.sh followed by ./build_sdk.sh to create"
+  echo "your SDK environment!"
+
 else
   echo "Usage: create_links.sh [windows|osx]"
   echo 

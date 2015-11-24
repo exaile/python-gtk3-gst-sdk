@@ -68,11 +68,10 @@
     </branch>
   </autotools>
 
-  <autotools id="python" autogenargs="--enable-shared"
+  <autotools id="python" autogenargs="--enable-shared --with-ensurepip=install"
 	     autogen-sh="configure" supports-non-srcdir-builds="no">
     <branch repo="python"
-	    module="2.7.8/Python-2.7.8.tar.xz" version="2.7.8">
-      <patch file="http://git.gnome.org/browse/gtk-osx/plain/patches/python-2.7.8-test_grammar.py-typo.patch" strip="1"/>
+      module="2.7.10/Python-2.7.10.tar.xz" version="2.7.10">
     </branch>
     <dependencies>
       <dep package="gettext-runtime"/>
@@ -170,7 +169,7 @@
     </after>
   </autotools>
 
-   <autotools id="pygobject3" autogen-sh="configure" >
+   <autotools id="pygobject3" autogen-sh="configure" autogenargs="--with-python=python2">
     <branch version="3.16.1" module="pygobject/3.16/pygobject-3.16.1.tar.xz"
 	    hash="sha256:7d96dad050f15ec1688617b749bb485811842de46a22d31f9396023e8eaa1ec3"/>
     <dependencies>

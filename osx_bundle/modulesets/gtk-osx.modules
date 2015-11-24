@@ -162,9 +162,10 @@
     </after>
   </autotools>
 
-  <autotools id="gdk-pixbuf" autogen-sh="configure">
-    <branch module="gdk-pixbuf/2.30/gdk-pixbuf-2.30.8.tar.xz" version="2.30.8"
-            hash="sha256:4853830616113db4435837992c0aebd94cbb993c44dc55063cee7f72a7bef8be"/>
+  <autotools id="gdk-pixbuf" autogen-sh="configure"
+             autogenargs="--enable-relocations">
+    <branch module="gdk-pixbuf/2.32/gdk-pixbuf-2.32.2.tar.xz" version="2.32.2"
+            hash="sha256:d3ab06fc123b13effed4c27c77cebdfad2173ff20628d82c397b7660ae926145"/>
     <after>
       <dep package="pango"/>
       <dep package="gobject-introspection"/>

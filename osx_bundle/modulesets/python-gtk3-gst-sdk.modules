@@ -17,16 +17,10 @@
   <repository type="tarball" name="sourceforge"
 		  href="http://iweb.dl.sf.net/project/"/>
 
-  <!-- for setuptools, for feedparser -->
-  <repository type="tarball" name="pypi"
-              href="http://pypi.python.org/packages/source/"/>
-
   <repository type="tarball" name="cairographics"
               href="http://cairographics.org/releases/"/>
   <repository type='tarball' name='ftp.gnu.org' href="ftp://ftp.gnu.org/gnu/"/>
   <repository type='tarball' name='ftp.gnupg.org' href="ftp://ftp.gnupg.org/" />
-  <repository type="tarball" name="mutagen"
-              href="https://bitbucket.org/lazka/mutagen/downloads/"/>
   <repository type="tarball" name="chromaprint"
               href="https://bitbucket.org/acoustid/chromaprint/downloads/"/>
   <repository type="tarball" name="soundtouch"
@@ -50,16 +44,14 @@
           href="http://www.mpg123.de/download/"/>
   <repository type="tarball" name="wavpack"
           href="http://www.wavpack.com/"/>
+  <repository type="tarball" name="exaile-pygobject"
+          href="https://bintray.com/artifact/download/exaile/pygobject/"/>
 
-  <metamodule id="quodlibet">
+  <metamodule id="python-gtk3-gst-sdk">
     <dependencies>
-      <dep package="meta-quodlibet-gstreamer-1.0"/>
-      <dep package="mutagen" />
-      <dep package="feedparser" />
-      <dep package="musicbrainz2" />
+      <dep package="meta-python-gtk3-gst-sdk-gstreamer-1.0"/>
       <dep package="meta-gtk-osx-python-gtk3"/>
-      <dep package="pyobjc"/>
-      <dep package="cddb"/>
+      <dep package="pyinstaller"/>
     </dependencies>
   </metamodule>
 
@@ -93,7 +85,7 @@
     </after>
   </autotools>
 
-  <metamodule id="meta-quodlibet-gstreamer-1.0">
+  <metamodule id="meta-python-gtk3-gst-sdk-gstreamer-1.0">
     <dependencies>
         <dep package="gstreamer-1.0"/>
         <dep package="gst-plugins-base-1.0"/>
@@ -124,7 +116,7 @@
     </after>
   </autotools>
 
-   <autotools id="pygobject3" autogen-sh="configure" >
+   <autotools id="pygobject3" autogen-sh="configure" autogenargs="--with-python=python2">
     <branch version="3.18.0" module="pygobject/3.18/pygobject-3.18.0.tar.xz"
 	    hash="sha256:1c3ba1112d3713cd5c86260312bfeb0de1f84f18808e51072c50b29d46156dc9"/>
     <dependencies>
@@ -166,88 +158,6 @@
       <dep package="meta-gtk-osx-bootstrap"/>
     </after>
   </autotools>
-
-  <distutils id="setuptools">
-    <branch repo="pypi" checkoutdir="setuptools-0.6c11" module="s/setuptools/setuptools-0.6c11.tar.gz"
-	    version="0.6c11" md5sum="7df2a529a074f613b509fb44feefe74e"/>
-  </distutils>
-
-  <distutils id="cddb">
-    <branch repo="sourceforge" version="1.4"
-            module="cddb-py/cddb-py/1.4/CDDB-1.4.tar.gz"
-            hash="sha256:bcd0f2f21848f2fcd692c542f124ec3e1414391ddeb6114f6f7bc5724a831d25">
-    </branch>
-  </distutils>
-
-  <!-- Upstream: https://github.com/kurtmckee/feedparser/blob/develop/NEWS -->
-  <distutils id="feedparser">
-    <branch repo="pypi" checkoutdir="feedparser-5.2.0" module="f/feedparser/feedparser-5.2.0.post1.tar.bz2"
-	    version="5.2.0.post1"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    </dependencies>
-  </distutils>
-
-  <!-- Upstream: https://bitbucket.org/lazka/mutagen/downloads -->
-  <distutils id="mutagen">
-    <branch repo="mutagen" checkoutdir="mutagen-1.31" module="mutagen-1.31.tar.gz"
-	    version="1.31" hash="sha256:0aa011707785fe30935d8655380052a20ba8b972aa738d4f144c457b35b4d699"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    </dependencies>
-  </distutils>
-
-  <distutils id="musicbrainz2"> <!-- note: deprecated, see https://github.com/alastair/python-musicbrainzngs for a replacement -->
-    <branch repo="musicbrainz" checkoutdir="musicbrainz2-0.7.4" module="python-musicbrainz2/python-musicbrainz2-0.7.4.tar.gz"
-	    version="0.7.4"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    </dependencies>
-  </distutils>
-
-  <!-- {{{ pyObjc, for osxmmkey plugin -->
-  <!-- Upstream: https://pypi.python.org/pypi/pyobjc-core -->
-  <distutils id="pyobjc-core">
-    <branch repo="pypi" checkoutdir="pyobjc-core-3.0.4" module="p/pyobjc-core/pyobjc-core-3.0.4.tar.gz"
-	    version="3.0.4" md5sum="6baaa0d2533cc9c26ad9f889ca9ecb01"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    </dependencies>
-  </distutils>
-
-  <!-- Upstream: https://pypi.python.org/pypi/pyobjc-framework-Cocoa -->
-  <distutils id="pyobjc-framework-Cocoa">
-    <branch repo="pypi" checkoutdir="pyobjc-framework-Cocoa-3.0.4" module="p/pyobjc-framework-Cocoa/pyobjc-framework-Cocoa-3.0.4.tar.gz"
-	    version="3.0.4" md5sum="5df56f66608812d6db42aa6e554f1529"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    <dep package="pyobjc-core"/>
-    </dependencies>
-  </distutils>
-
-  <!-- https://pypi.python.org/pypi/pyobjc-framework-Quartz -->
-  <distutils id="pyobjc-framework-Quartz">
-    <branch repo="pypi" checkoutdir="pyobjc-framework-Quartz-3.0.4" module="p/pyobjc-framework-Quartz/pyobjc-framework-Quartz-3.0.4.tar.gz"
-	    version="3.0.4" md5sum="85d82afedef8ecf7e20344890a543312"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    <dep package="pyobjc-core"/>
-    <dep package="pyobjc-framework-Cocoa"/>
-    </dependencies>
-  </distutils>
-
-  <!-- https://pypi.python.org/pypi/pyobjc -->
-  <distutils id="pyobjc">
-    <branch repo="pypi" checkoutdir="pyobjc-3.0.4" module="p/pyobjc/pyobjc-3.0.4.tar.gz"
-	    version="3.0.4" md5sum="7b1810f68ee783df943b5be51b694f35"/>
-    <dependencies>
-    <dep package="setuptools"/>
-    <dep package="pyobjc-core"/>
-    <dep package="pyobjc-framework-Cocoa"/>
-    <dep package="pyobjc-framework-Quartz"/>
-    </dependencies>
-  </distutils>
-  <!-- }}} -->
 
   <autotools id="gst-plugins-base-1.0" autogenargs="--disable-tests --disable-x --disable-xvideo" supports-non-srcdir-builds="no"
     makeargs="ERROR_CFLAGS=" autogen-sh="configure">
@@ -580,5 +490,13 @@
       <dep package="gmp" />
     </dependencies>
   </autotools>
+
+  <!-- pyinstaller
+       Upstream: http://www.pyinstaller.org/
+  -->
+  <distutils id="pyinstaller">
+    <branch repo="exaile-pygobject" checkoutdir="pyinstaller-3.1" module="PyInstaller-3.1.dev0%2Bexaile.2.tar.gz"
+            version="3.1.dev0+exaile.2"/>
+  </distutils>
 
 </moduleset>

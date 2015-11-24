@@ -4,6 +4,9 @@ Windows SDK Builder
 
 Requirements:
 
+Amusingly enough, building this SDK requires linux. Once you have an
+SDK environment, you can use it in Windows.
+
 * 7zip
 * wine (tested with 1.7.53)
 * wget
@@ -14,8 +17,14 @@ SDK Environment
 ---------------
 
 After running build_sdk.sh, ./_sdk contains a development environment
-including all dependencies and the needed launchers.
+including all dependencies and the needed launchers. You should run
+the build_sdk.sh from within your target project directory::
 
+  cd myapp/installer
+  /path/to/sdk/win_installer/build_sdk.sh
+
+You can also use the 'create_links.sh' script to create symlinks to
+the SDK scripts, so it's easier to use them from your application.
 
 Target project configuration
 ----------------------------
@@ -66,7 +75,7 @@ For build_installer.sh to work, you must define a _build.sh which will be called
 once the installer build environment has been set up.
 
 For convenience, a version of pyinstaller that has the correct hooks for
-GTK3/GSTreamer is installed in the wine environment, and NSIS 2.46 has also
+GTK3/GStreamer is installed in the wine environment, and NSIS 2.46 has also
 been installed.
 
 When _build.sh is executed, the following is available:
@@ -82,3 +91,15 @@ There are two useful functions available:
   * Arg 2: directory that contains your translations (*.mo files)
 * `package_installer`
   * Arg 1: your NSI file
+
+Bundling your application
+-------------------------
+
+There are a lot of different ways to create a 'frozen' version of your
+application, but we highly recommend using pyinstaller. You can run it
+something like this from within the SDK environment::
+
+  py -m pyinstaller -w myapp.py
+
+pyinstaller has the necessary hooks to detect GTK/GST dependencies and
+properly package them inside your application.
