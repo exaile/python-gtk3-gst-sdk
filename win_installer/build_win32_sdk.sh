@@ -5,9 +5,13 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
 
-DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
+if [ readlink -f "$0" 2> /dev/null ]; then
+    BASEDIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
+else
+    BASEDIR="$( cd "$( dirname "$(readlink "$0")" )" && pwd )"
+fi
 
-source "$DIR"/_base.sh
+source "$BASEDIR"/_base.sh
 
 download_and_verify;
 

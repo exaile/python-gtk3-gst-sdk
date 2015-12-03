@@ -4,8 +4,8 @@ Windows SDK Builder
 
 Requirements:
 
-Amusingly enough, building this SDK requires linux. Once you have an
-SDK environment, you can use it in Windows.
+Amusingly enough, building this SDK requires a *nix system (tested on OSX 
+and on Linux). Once you have an SDK environment, you can use it in Windows.
 
 * 7zip
 * wine (tested with 1.7.53)
@@ -16,12 +16,12 @@ SDK environment, you can use it in Windows.
 SDK Environment
 ---------------
 
-After running build_sdk.sh, ./_sdk contains a development environment
+After running build_win32_sdk.sh, ./_sdk contains a development environment
 including all dependencies and the needed launchers. You should run
-the build_sdk.sh from within your target project directory::
+the build_win32_sdk.sh from within your target project directory::
 
   cd myapp/installer
-  /path/to/sdk/win_installer/build_sdk.sh
+  /path/to/sdk/win_installer/build_win32_sdk.sh
 
 You can also use the 'create_links.sh' script to create symlinks to
 the SDK scripts, so it's easier to use them from your application.
@@ -71,8 +71,8 @@ SDK scripts
 Target project build script
 ---------------------------
 
-For build_installer.sh to work, you must define a _build.sh which will be called
-once the installer build environment has been set up.
+For build_win32_installer.sh to work, you must define a _build.sh which will
+be called once the installer build environment has been set up.
 
 For convenience, a version of pyinstaller that has the correct hooks for
 GTK3/GStreamer is installed in the wine environment, and NSIS 2.46 has also
@@ -103,3 +103,12 @@ something like this from within the SDK environment::
 
 pyinstaller has the necessary hooks to detect GTK/GST dependencies and
 properly package them inside your application.
+
+Known bugs
+----------
+
+Git for windows doesn't seem to like wine all that much, and outputs a
+bunch of things that look like errors to the console. It's probably ok.
+
+On OSX, the git for windows installer runs rebase.exe and it crashes. But,
+just ignore it and it's probably ok too.

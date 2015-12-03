@@ -32,7 +32,7 @@ function install_git {
     local DISPLAY_OLD=$DISPLAY
     export DISPLAY=$DISPLAY_SAVED
     # this needs a valid DISPLAY..
-    wine "$BUILD_ENV"/bin/Git-2.6.2-32-bit.exe /verysilent;
+    wine "$BUILD_ENV"/bin/Git-2.6.3-32-bit.exe /verysilent;
     export DISPLAY=$DISPLAY_OLD
     GITDIR="$(winepath -u "$(wine cmd.exe /c 'echo | set /p=%ProgramFiles%')")/Git";
 }

@@ -36,12 +36,15 @@ _check_project_var DOWNLOAD_FILES 1
 _check_project_var DOWNLOAD_HASHES 1
 _check_project_var GIT_CLONE_URL
 
-DIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
+if [ -z "$BASEDIR" ]; then
+  echo "Cannot source _base.sh without setting BASEDIR variable"
+  exit 1
+fi
 
-SDK_BIN="$DIR"/_bin
-SDK_DATA="$DIR"/data
-SDK_MISC="$DIR"/misc
-SDK_SCRIPTS="$DIR"/sdk_scripts
+SDK_BIN="$BASEDIR"/_bin
+SDK_DATA="$BASEDIR"/data
+SDK_MISC="$BASEDIR"/misc
+SDK_SCRIPTS="$BASEDIR"/sdk_scripts
 
 TARGET_BIN="$TARGET"/_bin
 TARGET_DATA="$TARGET"
@@ -60,23 +63,23 @@ function _download_and_verify {
   
   mkdir -p "$THISBIN"
   
-  if [ -z "$HASHES" ] || (cd "$THISBIN" && echo "$HASHES" | sha256sum --status --strict -c -); then
+  if [ -z "$HASHES" ] || (cd "$THISBIN" && echo "$HASHES" | shasum -a 256 -b --status -c -); then
     echo "all installers present in $THISBIN, continue.."
   else
     for f in $DOWNLOADS; do
       [ -z "$f" ] || wget -P "$THISBIN" -c "$f"
     done
     
-    [ -f "$THISDATA"/requirements.txt ] && pip install --download="$THISBIN" -r "$THISDATA"/requirements.txt
+    [ -f "$THISDATA"/requirements.txt ] && pip install --no-use-wheel --download="$THISBIN" -r "$THISDATA"/requirements.txt
     
     # Make sure we got everything right
-    (cd "$THISBIN" && echo "$HASHES" | sha256sum --strict -c -) || exit
+    (cd "$THISBIN" && echo "$HASHES" | shasum -a 256 -b -c -) || exit
   fi
 }
 
 
 function download_and_verify {
-    # download all installers and check with sha256sum
+    # download all installers and check with shasum
     _download_and_verify "$SDK_BIN" "$SDK_DATA" "$SDK_DOWNLOAD_HASHES" "$SDK_DOWNLOAD_FILES"
     _download_and_verify "$TARGET_BIN" "$TARGET_DATA" "$DOWNLOAD_HASHES" "$DOWNLOAD_FILES"
 }
@@ -104,11 +107,6 @@ function init_build_env {
     rm -Rf "$BUILD_ENV"
     mkdir "$BUILD_ENV"
     ln -s "$SDK_BIN" "$BUILD_ENV"/bin
-
-    # link the batch file and nsis file in
-    #ln -s "$BUILD_BAT" "$BUILD_ENV"
-    #ln -s "$NSIS_SCRIPT" "$BUILD_ENV"
-    #ln -s "$INST_ICON" "$BUILD_ENV"
 }
 
 
@@ -129,7 +127,7 @@ function _install_pydep {
   local PYTHON="$PYDIR"/python.exe
   if [ -f "$1" ]; then
     sed 's/^#bindep\s*//' "$1" > "$1".tmp
-    (wine $PYTHON -m pip install -f "$2" -r "$1".tmp)
+    (wine "$PYTHON" -m pip install -f "$2" -r "$1".tmp)
     rm "$1".tmp
   fi
 }
@@ -177,29 +175,12 @@ function cleanup {
 
 # Arg 1: directory where your frozen exe is
 # Arg 2: directory that contains your translations (*.mo files)
-function copy_pygi_data {
-   
-   local DIST="$1"
-   local PROJECT_LOCALE="$2"
-   
-   # copy deps that pyinstaller won't find
-   cp -R "$DEPS"/etc "$DIST"
-   cp -R "$DEPS"/share "$DIST"
+function prune_translations {
+  local DIST="$1"
+  local PROJECT_LOCALE="$2"
 
-   # remove unsupported GTK translations
    MAIN_LOCALE="$DIST"/share/locale
-   if [ "$PROJECT_LOCALE" != "" ]; then
-     python "$SDK_MISC"/prune_translations.py "$PROJECT_LOCALE" "$MAIN_LOCALE"
-     
-     # copy the translations
-     cp -RT "$PROJECT_LOCALE" "$MAIN_LOCALE"
-   fi
-   
-   # remove various translations that are unlikely to be visible to the user
-   # in our case and just increase the installer size
-   find "$MAIN_LOCALE" -name "gtk30-properties.mo" -exec rm {} \;
-   find "$MAIN_LOCALE" -name "gsettings-desktop-schemas.mo" -exec rm {} \;
-   find "$MAIN_LOCALE" -name "iso_*.mo" -exec rm {} \;
+   python "$SDK_MISC"/prune_translations.py "$PROJECT_LOCALE" "$MAIN_LOCALE"
 }
 
 
@@ -210,7 +191,7 @@ function package_installer {
     local NSIS_PATH=$(winepath "C:\\Program Files\\NSIS\\")
     
     # now package everything up
-    (cd "$BUILD_ENV" && wine "$NSIS_PATH/makensis.exe" $INSTALLER_NSI)
+    (cd "$BUILD_ENV" && wine "$NSIS_PATH/makensis.exe" "$INSTALLER_NSI")
     #mv "$BUILD_ENV/quodlibet-LATEST.exe" "$TARGET/quodlibet-$QL_VERSION-installer.exe"
 }
 

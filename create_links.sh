@@ -19,25 +19,26 @@ fi
 PLATFORM="$1"
 
 if [ "$PLATFORM" == "windows" ]; then
+  BASEDIR="$DIR"/win_installer
   source "$DIR"/win_installer/_base.sh
     
   # Create win_installer links
-  for file in build_sdk.sh build_installer.sh clean.sh; do 
+  for file in build_win32_sdk.sh build_win32_installer.sh clean_win32.sh; do 
     [ -h $file ] && rm $file
     ln -s "$DIR"/win_installer/$file $file
   done
   
-  echo "Done! Use ./build_sdk.sh to create your SDK environment!"
-  
+  echo "Done! Use ./build_win32_sdk.sh to create your SDK environment!"
   exit 0
+
 elif [ "$PLATFORM" == "osx" ]; then
   
-  for file in bootstrap.sh build_sdk.sh clean.sh env.sh misc; do 
+  for file in bootstrap_osx.sh build_osx_sdk.sh clean_osx.sh env.sh misc; do 
     [ -h $file ] && rm $file
     ln -s "$DIR"/osx_bundle/$file $file
   done
 
-  echo "Done! Use ./bootstrap.sh followed by ./build_sdk.sh to create"
+  echo "Done! Use ./bootstrap_osx.sh followed by ./build_osx_sdk.sh to create"
   echo "your SDK environment!"
 
 else
