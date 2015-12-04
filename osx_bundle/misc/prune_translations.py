@@ -1,24 +1,32 @@
 #!/usr/bin/env python
 
-"""A script to remove all translations for languages where Quod Libet doesn't
-provide a translation. The passed path should point to $PREFIX/share/locale in
-the finished bundle"""
+from __future__ import print_function
 
 import os
 import sys
 import shutil
 
 
-def main(argv):
-    target = os.path.abspath(argv[1])
-    assert os.path.exists(target)
-
-    for dir_ in os.listdir(target):
-        dir_ = os.path.join(target, dir_)
-        msgs = os.path.join(dir_, "LC_MESSAGES")
-        if not os.path.exists(os.path.join(msgs, "quodlibet.mo")):
-            shutil.rmtree(dir_)
-
-
 if __name__ == "__main__":
-    main(sys.argv)
+    ql_locale = sys.argv[1]
+    main_locale = sys.argv[2]
+
+    print("App locale:", ql_locale)
+    print("Dist locale:", main_locale)
+
+    assert os.path.exists(ql_locale)
+    assert os.path.exists(main_locale)
+
+    get_lang = lambda x: x.split("_")[0]
+
+    # get a list of languages which QL has translations for
+    ql_langs = set()
+    for entry in os.listdir(ql_locale):
+        ql_langs.add(get_lang(entry))
+
+    # delete all gtk+ etc translations which QL doesn't support
+    for entry in os.listdir(main_locale):
+        entry_path = os.path.join(main_locale, entry)
+        if get_lang(entry) not in ql_langs:
+            print("Pruning", entry)
+            shutil.rmtree(entry_path)

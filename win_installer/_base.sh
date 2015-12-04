@@ -173,14 +173,14 @@ function cleanup {
 # Utility functions for building installers
 #
 
-# Arg 1: directory where your frozen exe is
-# Arg 2: directory that contains your translations (*.mo files)
+# Arg 1: directory that contains your translations (*.mo files)
+# Arg 2: directory where your frozen exe is
 function prune_translations {
-  local DIST="$1"
-  local PROJECT_LOCALE="$2"
-
-   MAIN_LOCALE="$DIST"/share/locale
-   python "$SDK_MISC"/prune_translations.py "$PROJECT_LOCALE" "$MAIN_LOCALE"
+  local PROJECT_LOCALE="$1"
+  local DIST="$2"
+  
+  MAIN_LOCALE="$DIST"/share/locale
+  python "$SDK_MISC"/prune_translations.py "$PROJECT_LOCALE" "$MAIN_LOCALE"
 }
 
 

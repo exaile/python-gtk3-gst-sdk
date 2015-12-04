@@ -13,7 +13,7 @@ FILENAME=$(basename "$BUNDLE_PATH")
 EXTENSION="${FILENAME##*.}"
 FILENAME="${FILENAME%.*}"
 
-if [ "$EXTENSION" != ".app" ]; then
+if [ "$EXTENSION" != "app" ]; then
     echo "$BUNDLE_PATH is not an app bundle!"
     exit 1
 fi
@@ -30,7 +30,10 @@ cp -r "$BUNDLE_PATH" _dmg/"$FILENAME"
 ln -s /Applications _dmg/"$FILENAME"
 
 pushd _dmg
-hdiutil create -srcfolder "$FILENAME" "$FILENAME".dmg
+hdiutil create -srcfolder "$FILENAME" "$FILENAME"-uncompressed.dmg
+
+echo "Compressing .dmg..."
+hdiutil convert "$FILENAME"-uncompressed.dmg -format UDBZ -o "$FILENAME".dmg
 popd
 
 mv _dmg/"$FILENAME".dmg "$FILENAME".dmg

@@ -495,8 +495,9 @@
        Upstream: http://www.pyinstaller.org/
   -->
   <distutils id="pyinstaller">
-    <branch repo="exaile-pygobject" checkoutdir="pyinstaller-3.1" module="PyInstaller-3.1.dev0%2Bexaile.3.tar.gz"
-            version="3.1.dev0+exaile.3"/>
+    <branch repo="exaile-pygobject" checkoutdir="pyinstaller-3.1" module="PyInstaller-3.1.dev0%2Bexaile.4.tar.gz"
+            version="3.1.dev0+exaile.4"
+            hash="sha256:38a7775f8e7c7b307909d21fb2052cc76ba5d22516b404d3c5b04e90da302e62"/>
   </distutils>
 
 </moduleset>

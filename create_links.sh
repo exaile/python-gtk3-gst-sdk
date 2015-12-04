@@ -33,7 +33,7 @@ if [ "$PLATFORM" == "windows" ]; then
 
 elif [ "$PLATFORM" == "osx" ]; then
   
-  for file in bootstrap_osx.sh build_osx_sdk.sh clean_osx.sh env.sh misc; do 
+  for file in bootstrap_osx.sh build_osx_sdk.sh build_osx_installer.sh clean_osx.sh env.sh misc; do 
     [ -h $file ] && rm $file
     ln -s "$DIR"/osx_bundle/$file $file
   done
