@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ ! -z "$GTK_SDK_VERBOSE" ]; then
+  set -x
+fi
+
 if [ readlink -f "$0" 2> /dev/null ]; then
     BASEDIR="$( cd "$( dirname "$(readlink -f "${BASH_SOURCE[0]}")" )" && pwd )"
 else

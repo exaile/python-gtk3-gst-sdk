@@ -5,6 +5,10 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
 
+if [ ! -z "$GTK_SDK_VERBOSE" ]; then
+  set -x
+fi
+
 if [ readlink -f "$0" 2> /dev/null ]; then
     BASEDIR="$( cd "$( dirname "$(readlink -f "$0")" )" && pwd )"
 else

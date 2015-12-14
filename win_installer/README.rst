@@ -104,6 +104,15 @@ something like this from within the SDK environment::
 pyinstaller has the necessary hooks to detect GTK/GST dependencies and
 properly package them inside your application.
 
+Troubleshooting
+---------------
+
+The bash scripts aren't always as robust as one would like, so if you need to
+figure out what's going wrong, you can make the scripts more verbose by
+setting the GTK_SDK_VERBOSE environment variable, for example::
+
+  GTK_SDK_VERBOSE=1 ./build_win32_sdk.sh
+
 Known bugs
 ----------
 
