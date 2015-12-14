@@ -6,7 +6,12 @@
 # it under the terms of the GNU General Public License version 2 as
 # published by the Free Software Foundation.
 
-trap 'exit 1' SIGINT;
+function catch_sigint {
+  echo "Caught kill signal, exiting..."
+  exit 1
+}
+
+trap catch_sigint SIGINT;
 
 # Data directory for program that is getting packaged
 TARGET=$(pwd)
@@ -89,14 +94,17 @@ function init_wine {
     export WINEARCH=win32
     export WINEPREFIX="$BUILD_ENV"/wine_env
     export WINEDEBUG=-all
+    export WINEDLLOVERRIDES="mscoree,mshtml="
 
     # try to limit the effect on the host system when installing with wine.
     export HOME="$BUILD_ENV"/home
     export XDG_DATA_HOME="$HOME"/.local/share
     export XDG_CONFIG_HOME="$HOME"/.config
     export XDG_CACHE_HOME="$HOME"/.cache
-    export DISPLAY_SAVED=$DISPLAY
-    export DISPLAY=be_quiet_damnit
+    
+    # crashes on wine 1.8
+    #export DISPLAY_SAVED=$DISPLAY
+    #export DISPLAY=be_quiet_damnit
 
     mkdir -p "$WINEPREFIX"
     wine wineboot -u
