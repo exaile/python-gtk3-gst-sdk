@@ -1,8 +1,14 @@
 
+# Check
+if [ -z "$(which 7z)" ]; then
+    echo "7z not found, needed to extract packages... exiting!"
+    exit 1
+fi
+
 # extract the gi binaries
 PYGI="$BUILD_ENV"/pygi
 echo "extract pygi-aio..."
-7z x -o"$PYGI" -y "$BUILD_ENV/bin/pygi-aio-$PYGI_AIO_VER-setup.exe" > /dev/null
+7z x -o"$PYGI" -y "$BUILD_ENV/bin/${PYGI_EXE}" > /dev/null
 echo "done"
 echo "extract packages..."
 (cd "$PYGI"/rtvc9-32/ && find . -name "*.7z" -execdir 7z x -y {} > /dev/null \;)
@@ -14,37 +20,12 @@ echo "done"
 mkdir "$DEPS"
 
 for name in rtvc9-32 noarch; do
-    cp -R "$PYGI"/"$name"/Base/gnome/* "$DEPS"
-
-    cp -R "$PYGI"/"$name"/JPEG/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/TIFF/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/WebP/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Jasper/gnome/* "$DEPS"
-
-    cp -R "$PYGI"/"$name"/GDK/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/GDKPixbuf/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/ATK/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Pango/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/GTK/gnome/* "$DEPS"
-
-    cp -R "$PYGI"/"$name"/Gstreamer/gnome/* "$DEPS"
-
-    cp -R "$PYGI"/"$name"/Orc/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/GnuTLS/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Aerial/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Soup/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Jack/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/SQLite/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/GSTPlugins/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/HarfBuzz/gnome/* "$DEPS"
-
-    cp -R "$PYGI"/"$name"/OpenJPEG/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/OpenEXR/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Curl/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/IDN/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/GSTPluginsExtra/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/GSTPluginsMore/gnome/* "$DEPS"
-    cp -R "$PYGI"/"$name"/Graphene/gnome/* "$DEPS"
+    for package in ATK Aerial Base Curl GCrypt GDK GDKPixbuf GSTPlugins \
+        GSTPluginsExtra GSTPluginsMore GTK GnuTLS Graphene Gstreamer \
+        HarfBuzz IDN JPEG Jack LibAV OpenEXR OpenJPEG OpenSSL Orc Pango \
+        SQLite Soup StdCPP TIFF WebP; do
+    cp -R "$PYGI"/"$name"/"$package"/gnome/* "$DEPS"
+    done
 done
 
 # remove ladspa, frei0r

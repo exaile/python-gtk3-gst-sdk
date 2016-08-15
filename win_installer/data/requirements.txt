@@ -1,2 +1,2 @@
 #bindep pypiwin32==219
-#bindep PyInstaller==3.1.dev0+exaile.5
+PyInstaller==3.2

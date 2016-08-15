@@ -17,7 +17,7 @@ function setup_deps {
 }
 
 function install_python {
-    wine msiexec /a "$BUILD_ENV"/bin/python-2.7.10.msi /qb
+    wine msiexec /a "$BUILD_ENV"/bin/${PYTHON_MSI} /qb
     PYDIR="$WINEPREFIX"/drive_c/Python27
 
     # install the python packages
@@ -38,12 +38,12 @@ function install_git {
 }
 
 function install_7zip {
-    wine msiexec /a "$BUILD_ENV"/bin/7z920.msi /qb
+    wine msiexec /a "$BUILD_ENV"/bin/${SZIP_MSI} /qb
     SZIPDIR="$WINEPREFIX/drive_c/Program Files/7-Zip/"
 }
 
 function install_nsis {
-    wine "$BUILD_ENV"/bin/nsis-2.46-setup.exe /S
+    wine "$BUILD_ENV"/bin/${NSIS_EXE} /S
 }
 
 install_git;
