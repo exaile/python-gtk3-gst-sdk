@@ -6,7 +6,7 @@ import os
 checkoutroot = os.path.expanduser("~/jhbuild_checkoutroot")
 prefix = os.path.expanduser("~/jhbuild_prefix")
 modulesets_dir = os.environ["QL_OSXBUNDLE_MODULESETS_DIR"]
-moduleset = ["bootstrap", "python-gtk3-gst-sdk"]
+moduleset = ["python-gtk3-gst-sdk"]
 modules = []
 
 interact      = True # whether to interact with the user.
@@ -18,4 +18,13 @@ skip.append("libiconv")
 
 # Some packages don't work in debug mode
 #setup_debug()
-setup_sdk(target="10.6", sdk_version="10.10", architectures=[_default_arch])
+
+setup_sdk(target="10.9", sdk_version="native")
+
+os.environ["GTLS_SYSTEM_CA_FILE"] = os.path.join(
+    prefix, "lib/python2.7/site-packages/certifi/cacert.pem")
+
+# Make sure we use the same shell in "jhbuild shell" as during building
+if os.environ.get("CONFIG_SHELL"):
+    os.environ["SHELL"] = os.environ.get("CONFIG_SHELL")
+

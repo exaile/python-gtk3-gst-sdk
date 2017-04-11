@@ -14,6 +14,8 @@ DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
 cd "$DIR"
 
 export HOME="$DIR/_home"
-export PATH="$HOME/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export QL_OSXBUNDLE_JHBUILD_DEST="$DIR/_jhbuild"
+
+export PATH="$HOME/.local/bin:$PATH"
 export QL_OSXBUNDLE_MODULESETS_DIR="$BASEDIR/modulesets"
 alias jhbuild="python2.7 `which jhbuild`"
