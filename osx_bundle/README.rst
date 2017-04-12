@@ -2,13 +2,6 @@
 OS X Bundle Build Scripts
 =========================
 
-**Note:**
-    In case you want just want to run Quod Libet from source you can ignore
-    all this and use the released bundle as a development environment.
-    Download the official bundle, git clone the quodlibet repo and do
-    ``./QuodLibet.app/Contents/MacOS/run quodlibet.py``.
-
-
 Uses jhbuild [3] and the stable module set provided by gtk-osx [2] with a
 customized specific module set overlay to build all needed dependencies for
 an application that uses GTK/GStreamer and Python on OSX. Everything will
@@ -27,8 +20,8 @@ like homebrew or macports aren't in your ``$PATH``.
 
 (Tested on OS X 10.10)
 
-1) Call ``bootstrap.sh`` to install jhbuild and set up dummy ``$HOME`` as base.
-2) Call ``build.sh`` to download and build all the dependencies.
+1) Call ``bootstrap_osx.sh`` to install jhbuild and set up dummy ``$HOME`` as base.
+2) Call ``build_osx_sdk.sh`` to download and build all the dependencies.
    This should not lead to errors; if it does please file a bug.
 
 Note: XCode 7.x has some compile errors, but XCode 6.x works fine.
@@ -52,8 +45,8 @@ a GTK/GST python application are installed into the jhbuild environment.
 
 * execute ``source env.sh``, followed by ``jhbuild shell`` to get into the
   jhbuild environment
-* Use ``pip`` to install any python modules that are required to run
-  your application
+* Use ``python -m pip`` to install any python modules that are required to run
+  your application (there's a bug with the normal pip command)
 * Install your application
 
 Once your app is installed, then you can use the installed version of
@@ -78,8 +71,17 @@ Content Description
 Bugs
 ----
 
-I've noticed that python doesn't link properly the first time it gets built
-by jhbuild, and links to the system python instead. If you run into this,
+If you get an error similar to "EnvironmentError: MacOSX10.11.sdk not found",
+then this means that the SDK corresponding to your OS isn't installed. You can
+see the installed SDKs via:
+
+  ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
+  
+In jhbuildrc-custom, in 'setup_sdk(target="10.9", sdk_version="native")',
+replace 'native' with the latest SDK that is installed on your system.
+
+I've noticed that sometimes python doesn't link properly the first time it gets
+built by jhbuild, and links to the system python instead. If you run into this,
 try running::
 
   source env.sh
