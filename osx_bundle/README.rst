@@ -37,6 +37,16 @@ Development
   review of the sdk module to reduce duplication and a rebuilt to verify
   that everything still works.
 
+Using this as a development environment
+---------------------------------------
+
+After you've finished running ``build.sh``, all of the generic requirements for
+a GTK/GST python application are installed into the jhbuild environment.
+
+* execute ``source env.sh``, followed by ``jhbuild shell`` to get into the
+  jhbuild environment
+* You should be able to execute your application from here
+
 Bundling your application
 -------------------------
 
