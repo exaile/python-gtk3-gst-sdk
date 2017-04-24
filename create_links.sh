@@ -19,17 +19,8 @@ fi
 PLATFORM="$1"
 
 if [ "$PLATFORM" == "windows" ]; then
-  BASEDIR="$DIR"/win_installer
-  source "$DIR"/win_installer/_base.sh
-    
-  # Create win_installer links
-  for file in build_win32_sdk.sh build_win32_installer.sh clean_win32.sh; do 
-    [ -h $file ] && rm $file
-    ln -s "$DIR"/win_installer/$file $file
-  done
-  
-  echo "Done! Use ./build_win32_sdk.sh to create your SDK environment!"
-  exit 0
+  echo "Deprecated! MSYS2 does not support symlink by default!"
+  exit 1
 
 elif [ "$PLATFORM" == "osx" ]; then
   

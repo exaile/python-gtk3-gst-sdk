@@ -2,54 +2,48 @@
 Windows SDK Builder
 ===================
 
-Requirements:
+Requirements
+------------
 
-Amusingly enough, building this SDK requires a *nix system (tested on OSX 
-and on Linux). Once you have an SDK environment, you can use it in Windows.
+Building this SDK requires an MSYS2_ environment. Please run all commands in
+the MSYS2 MinGW (32/64)bit command prompt. Also, both your application and this
+SDK should be located inside MSYS2 native home directory, instead of MSYS2
+mapping to Windows directory, i.e. they should be in ~, instead of /c/.
 
-* 7zip
-* wine (tested with 1.7.53)
-* wget
-* git
-* 1.5GB free space
+.. _MSYS2: http://www.msys2.org/
 
 SDK Environment
 ---------------
 
-After running build_win32_sdk.sh, ./_sdk contains a development environment
-including all dependencies and the needed launchers. You should run
-the build_win32_sdk.sh from within your target project directory::
+The SDK relies on MSYS2 pacman package manager to fetch and install binary
+dependencies. By default, it installs GTK3, GStreamer (with plugins) and NSIS
+to do this, you can specify more dependencies by changing your `Target project
+configuration`_
+
+In order to set up the SDK, you should run build_win32_sdk.sh from within your
+target project directory::
 
   cd myapp/installer
   /path/to/sdk/win_installer/build_win32_sdk.sh
 
-You can also use the 'create_links.sh' script to create symlinks to
-the SDK scripts, so it's easier to use them from your application.
+Afterwards, all the dependencies will be included in the _build_root directory.
+This includes a completely separate pacman root from your MSYS2 environment,
+which means that the SDK will *not* disturb your environment at all.
+
+In order to clean up the SDK::
+
+  cd myapp/installer
+  /path/to/sdk/win_installer/clean_win32.sh
+
 
 Target project configuration
 ----------------------------
 
 You must define a project.config and place it in your target directory. An
-example project.config is as follows:
+example project.config is as follows::
 
-  # If you don't require files/hashes
-  #DOWNLOAD_FILES_NOT_SET=1
-  #DOWNLOAD_HASHES_NOT_SET=1
-  
-  # Defines files to download from the web
-  DOWNLOAD_FILES=$(cat <<EOF
-  http://example.com/example.zip
-  EOF
-  )
-
-  # Defines sha256sum of files downloaded 
-  # Note that the last line must end in a \
-  DOWNLOAD_HASHES="\
-  0aa011707785fe30935d8655380052a20ba8b972aa738d4f144c457b35b4d699  mutagen-1.31.tar.gz\
-  "
-  
-  # URL to clone your repository from
-  GIT_CLONE_URL="https://github.com/my/project.git"
+  # The binary dependencies for your application that should be installed by pacman
+  TARGET_DOWNLOAD_PKGS="make git tar"
 
 Optional files:
 
@@ -57,49 +51,35 @@ Optional files:
 
 A `requirements.txt` file contains python dependencies to download + install.
 If you require a wheel or some other package that cannot be downloaded using
-the linux version of pip, then prefix the requirement with #bindep and add
-the download link to the project download list instead.
+pip, install it with pacman instead.
 
-* _extract_deps.sh: files are in $TARGET_BIN directory
-* _install_deps.sh: files are in $TARGET_BIN
-
-SDK scripts
-
-* Any files in the target/sdk_scripts will be linked to the built SDK directory
-  so that you can provide test, build, etc scripts specific to your app
-  
 Target project build script
 ---------------------------
 
-For build_win32_installer.sh to work, you must define a _build.sh which will
-be called once the installer build environment has been set up.
+After the SDK has been set up, and you have defined your project configuration,
+you can use build_win32_installer.sh in order to create an installer.You must define a _build.sh in your project directory, which will be called by
+build_win32_installer.sh once all the dependencies have been installed.
 
-For convenience, a version of pyinstaller that has the correct hooks for
-GTK3/GStreamer is installed in the wine environment, and NSIS 2.46 has also
-been installed.
+For convenience, NSIS has been installed in the SDK environment.
 
-When _build.sh is executed, the following is available:
+Some useful utility functions available in your _build.sh:
 
-* Executing commands via `wine` will execute in the build environment
-* `$DEPS` points to the directory that holds the extracted PyGObject files
-* `$TARGET` points to the target directory of your application
+* `package_installer`: Package your application using NSIS. Arg 1: your NSI file.
 
-There are two useful functions available:
+* `build_python`: Run your python script using the SDK bundled python.
 
-* `copy_pygi_data`
-  * Arg 1: directory where your frozen exe is
-  * Arg 2: directory that contains your translations (*.mo files)
-* `package_installer`
-  * Arg 1: your NSI file
+* `build_pip`: Run pip using the SDK bundled pip.
+
+* `build_pacman`: Run pacman using the SDK build root.
 
 Bundling your application
 -------------------------
 
 There are a lot of different ways to create a 'frozen' version of your
 application, but we highly recommend using pyinstaller. You can run it
-something like this from within the SDK environment::
+like this in your _build.sh file::
 
-  py -m pyinstaller -w myapp.py
+  build_python -m pyinstaller -w myapp.py
 
 pyinstaller has the necessary hooks to detect GTK/GST dependencies and
 properly package them inside your application.
@@ -115,9 +95,6 @@ setting the GTK_SDK_VERBOSE environment variable, for example::
 
 Known bugs
 ----------
-
-Git for windows doesn't seem to like wine all that much, and outputs a
-bunch of things that look like errors to the console. It's probably ok.
 
 On OSX, the git for windows installer runs rebase.exe and it crashes. But,
 just ignore it and it's probably ok too.

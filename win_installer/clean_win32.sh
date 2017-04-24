@@ -9,8 +9,9 @@ if [ ! -z "$GTK_SDK_VERBOSE" ]; then
   set -x
 fi
 
-rm -f _sdk
-rm -rf _build_env
-rm -rf _build_env_installer
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$BASEDIR"/_base.sh
+echo "${BUILD_ROOT}"
+rm -rf "${BUILD_ROOT}"
 
 [ -f _clean.sh ] && source _clean.sh
