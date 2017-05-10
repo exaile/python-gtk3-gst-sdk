@@ -95,8 +95,8 @@ function install_pydeps {
   # Since we need pywin32_ctypes to install *before* PyInstaller for Exaile,
   # we will iterate over the requirements file and install one by one, which
   # guarantees the order
-  while IFS='' read -r line || [[ -n "$line" ]]; do
-    build_pip install $line
+  while IFS='' read -r line; do
+    [ ! -z "$line" ] && build_pip install $line
   done < "$1"
 }
 
