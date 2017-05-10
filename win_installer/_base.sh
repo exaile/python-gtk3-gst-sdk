@@ -74,6 +74,8 @@ function create_root {
   mkdir -p "${BUILD_ROOT}"/var/log
   mkdir -p "${BUILD_ROOT}"/tmp
 
+  mkdir -p "${BUILD_ROOT}"/home
+
   build_pacman --noconfirm -Syu
   build_pacman --noconfirm -S base
 }
@@ -86,6 +88,10 @@ function install_deps {
 }
 
 function install_pydeps {
+  # Without this hack, pip will look into the user's home dir and uninstall
+  # current local packages if old versions of them collide with the user's
+  # requirements.txt
+  export PYTHONUSERBASE="${BUILD_ROOT}/home"
   # Since we need pywin32_ctypes to install *before* PyInstaller for Exaile,
   # we will iterate over the requirements file and install one by one, which
   # guarantees the order
