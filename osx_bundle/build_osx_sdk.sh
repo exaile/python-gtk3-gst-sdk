@@ -5,10 +5,7 @@ set -e
 source env.sh
 
 jhbuild build meta-bootstrap
-jhbuild build python
-jhbuild build meta-gtk-osx-bootstrap
-jhbuild build python-gtk3-gst-sdk
-
+jhbuild build sdk
 # Everything under here is added
 
 # Ensure that pip is in the environment

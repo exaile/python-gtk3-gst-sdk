@@ -19,4 +19,4 @@ git clone git://git.gnome.org/jhbuild "$QL_OSXBUNDLE_JHBUILD_DEST"
 cp misc/gtk-osx-jhbuildrc "$HOME/.jhbuildrc"
 cp misc/jhbuildrc-custom "$HOME/.jhbuildrc-custom"
 
-echo "Bootstrap complete."
+echo "Bootstrap complete. Run ./build_osx_sdk.sh next."

@@ -1,0 +1,1041 @@
+<?xml version="1.0"?>
+<!DOCTYPE moduleset SYSTEM "moduleset.dtd">
+<!-- :mode=xml:tabSize=4:indentSize=4:folding=explicit: -->
+<moduleset>
+  <repository type="git" name="git.gnome.org"
+      href="git://git.gnome.org/"/>
+  <repository type="tarball" name="git.gnome.org/browse"
+      href="http://git.gnome.org/browse/"/>
+  <repository type="tarball" name="effbot"
+              href="http://effbot.org/downloads/"/>
+  <repository type="tarball" name="github-tar"
+      href="https://github.com/"/>
+  <repository type="tarball" name="sourceforge"
+          href="http://downloads.sourceforge.net/sourceforge/"/>
+  <repository type="tarball" name="pypi"
+              href="http://pypi.python.org/packages/"/>
+  <repository type="tarball" name="cairographics"
+              href="http://cairographics.org/releases/"/>
+  <repository type='tarball' name='ftp.gnu.org' href="ftp://ftp.gnu.org/gnu/"/>
+  <repository type='tarball' name='ftp.gnupg.org' href="ftp://ftp.gnupg.org/" />
+  <repository type="tarball" name="mutagen"
+              href="https://bitbucket.org/lazka/mutagen/downloads/"/>
+  <repository type="tarball" name="chromaprint"
+              href="https://bitbucket.org/acoustid/chromaprint/downloads/"/>
+  <repository type="tarball" name="soundtouch"
+              href="http://www.surina.net/soundtouch/"/>
+  <repository type="tarball" name="entropywave"
+          href="http://code.entropywave.com/download/"/>
+  <repository type="tarball" name="xiph"
+          href="http://downloads.xiph.org/releases/"/>
+  <repository type="tarball" name="ftp.gnutls.org"
+          href="ftp://ftp.gnutls.org/"/>
+  <repository type="tarball" name="gstreamer"
+          href="http://gstreamer.freedesktop.org/src/"/>
+  <repository type="tarball" name="sqlite" href="http://www.sqlite.org/"/>
+  <repository type="tarball" name="ftp.gnome.org" default="yes"
+          href="http://ftp.gnome.org/pub/GNOME/sources/"/>
+  <repository type="tarball" name="mpg123"
+          href="http://www.mpg123.de/download/"/>
+  <repository type="tarball" name="wavpack"
+          href="http://www.wavpack.com/"/>
+  <repository type="tarball" name="python"
+          href="https://www.python.org/ftp/python/"/>
+  <repository name="openssl" type="tarball"
+              href="https://www.openssl.org/source/"/>
+  <repository type="tarball" name="fontconfig"
+          href="http://www.freedesktop.org/software/fontconfig/release/"/>
+  <repository type="tarball" name="harfbuzz"
+              href="http://www.freedesktop.org/software/harfbuzz/release/"/>
+  <repository type="tarball" name="icon-theme"
+          href="http://icon-theme.freedesktop.org/releases/"/>
+  <repository type="tarball" name="jpeg"
+          href="http://www.ijg.org/files/"/>
+  <repository type="tarball" name="xmlsoft.org"
+          href="ftp://xmlsoft.org/libxml2/"/>
+  <repository type="tarball" name="pkgconfig"
+              href="http://pkgconfig.freedesktop.org/releases/"/>
+  <repository type="tarball" name="libtiff"
+          href="http://download.osgeo.org/"/>
+  <repository type="tarball" name="sourceware.org"
+              href="ftp://sourceware.org/pub/"/>
+  <repository type="tarball" name="freedesktop"
+              href="ftp://ftp.freedesktop.org/pub/"/>
+  <repository type="git" name="github" href="git://github.com/"/>
+  <repository type="tarball" name="itstool" href="http://files.itstool.org/"/>
+  <repository type="tarball" name="ragel"
+              href="http://www.colm.net/files/ragel/"/>
+  <repository type="tarball" name="tukaani.org"
+              href="http://tukaani.org/"/>
+  <repository type="tarball" name="cmake"
+              href="http://www.cmake.org/files/"/>
+  <repository type="tarball" name="intltool"
+              href="http://launchpad.net/intltool/trunk/"/>
+  <repository type="tarball" name="tango.freedesktop.org"
+              href="http://tango.freedesktop.org/releases/"/>
+
+  <metamodule id="meta-bootstrap">
+    <dependencies>
+        <dep package="cmake"/>
+        <dep package="automake"/>
+        <dep package="intltool"/>
+        <dep package="pkg-config"/>
+        <dep package="libtool"/>
+    </dependencies>
+  </metamodule>
+
+  <metamodule id="sdk">
+    <dependencies>
+      <dep package="gstreamer-1.0"/>
+      <dep package="gst-plugins-base-1.0"/>
+      <dep package="gst-plugins-good-1.0"/>
+      <dep package="gst-plugins-ugly-1.0"/>
+      <dep package="gst-plugins-bad-1.0"/>
+      <dep package="gst-libav"/>
+      <dep package="gtk+-3.0"/>
+      <dep package="py2cairo"/>
+      <dep package="pygobject3"/>
+      <dep package="gtk-mac-integration-python"/>
+      <dep package="pyobjc"/>
+      <dep package="dmgbuild"/>
+      <dep package="adwaita-icon-theme"/>
+    </dependencies>
+  </metamodule>
+
+  <autotools id="cmake" autogen-sh="bootstrap"
+             autogen-template="%(srcdir)s/%(autogen-sh)s --prefix=%(prefix)s">
+    <branch repo="cmake" module="v3.2/cmake-3.2.1.tar.gz" version="3.2.1">
+      <patch file="patches/cmake-libnetwork.patch" strip="1"/>
+    </branch>
+  </autotools>
+
+  <autotools id="pkg-config" autogen-sh="configure"
+             autogenargs="--with-internal-glib">
+    <branch repo="pkgconfig"
+            module="pkg-config-0.28.tar.gz" version="0.28"/>
+  </autotools>
+
+  <autotools id="m4" autogen-sh="configure" bootstrap="true">
+    <branch repo="ftp.gnu.org"
+            module="m4/m4-1.4.17.tar.xz" version="1.4.17"/>
+  </autotools>
+
+  <autotools id="xz" autogen-sh="configure" bootstrap="true">
+    <branch repo="tukaani.org" module="xz/xz-5.2.1.tar.bz2" version="5.2.1"/>
+  </autotools>
+
+  <autotools id="autoconf" autogen-sh="configure" bootstrap="true">
+    <branch repo="ftp.gnu.org"
+            module="autoconf/autoconf-2.69.tar.xz" version="2.69"/>
+    <dependencies>
+      <dep package="xz"/>
+      <dep package="m4"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="automake" autogen-sh="configure" bootstrap="true">
+    <branch repo="ftp.gnu.org" version="1.15"
+            module="automake/automake-1.15.tar.gz"/>
+    <dependencies>
+      <dep package="autoconf"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gtk-osx-docbook" autogen-sh="configure"
+             supports-non-srcdir-builds="no" >
+    <branch repo="sourceforge" module="gtk-osx/gtk-osx-docbook-1.2.tar.gz"
+            version="1.2"/>
+  </autotools>
+
+  <autotools id="intltool" autogen-sh="configure">
+    <branch repo="intltool" module="0.51.0/+download/intltool-0.51.0.tar.gz"
+            version="0.51.0"
+            hash="md5:12e517cac2b57a0121cda351570f1e63"/>
+    <dependencies>
+        <dep package="gettext-tools"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="icon-naming-utils" autogen-sh="configure">
+    <branch repo="tango.freedesktop.org"  version="0.8.90"
+            module="icon-naming-utils-0.8.90.tar.bz2"
+            hash="md5:dd8108b56130b9eedc4042df634efa66"/>
+  </autotools>
+
+  <autotools id="readline" autogen-sh="configure">
+    <branch repo="ftp.gnu.org" module="readline/readline-6.3.tar.gz"
+      version="6.3">
+    </branch>
+  </autotools>
+
+  <autotools id="itstool" autogen-sh="configure">
+    <branch module="itstool/itstool-2.0.2.tar.bz2" version="2.0.2"
+            repo="itstool"/>
+    <dependencies>
+      <dep package="libxml2-python"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="zlib" autogen-sh="configure" skip-autogen="never"
+             supports-non-srcdir-builds="no">
+    <branch repo="sourceforge" version="1.2.11"
+            module="libpng/zlib-${version}.tar.xz"
+            hash="sha256:4ff941449631ace0d4d203e3483be9dbc9da454084111f97ea0a2114e19bf066"/>
+  </autotools>
+
+  <autotools id="libpng" autogenargs="--enable-shared" autogen-sh="configure">
+    <branch version="1.6.17" module="libpng/libpng-1.6.17.tar.xz"
+            repo="sourceforge" md5sum="430a9b76b78533235cd4b9b26ce75c7e"/>
+  </autotools>
+
+  <autotools id="libffi" autogenargs="--disable-builddir"
+             autogen-sh="configure">
+    <branch module="libffi/libffi-${version}.tar.gz" repo="sourceware.org"
+            version="3.2.1"
+            hash="sha256:d06ebb8e1d9a22d19e38d63fdb83954253f39bedc5d46232a05645685722ca37"/>
+  </autotools>
+
+  <autotools id="pixman" autogenargs="--disable-gtk --disable-mmx"
+             autogen-sh="configure">
+    <branch version="0.34.0" module="pixman-${version}.tar.gz"
+            repo="cairographics"
+            hash="sha1:a1b1683c1a55acce9d928fea1ab6ceb79142ddc7"/>
+  </autotools>
+
+  <autotools id="cairo"  autogen-sh="configure"
+             autogenargs="--enable-pdf --enable-quartz --disable-xlib --without-x">
+    <branch module="cairo-${version}.tar.xz"  version="1.14.8"
+            repo="cairographics"
+            hash="sha256:d1f2d98ae9a4111564f6de4e013d639cf77155baf2556582295a0f00a9bc5e20">
+    </branch>
+    <dependencies>
+      <dep package="libpng"/>
+      <dep package="pixman"/>
+      <dep package="freetype-no-harfbuzz"/>
+      <dep package="fontconfig"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libpng" autogenargs="--enable-shared" autogen-sh="configure">
+    <branch version="1.6.29" module="libpng/libpng-1.6.29.tar.xz"
+            repo="sourceforge"
+            hash="sha256:4245b684e8fe829ebb76186327bb37ce5a639938b219882b53d64bd3cfc5f239"/>
+  </autotools>
+
+  <autotools id="librsvg" autogenargs="--disable-Bsymbolic">
+    <branch module="librsvg/2.40/librsvg-2.40.16.tar.xz" version="2.40.16"
+        hash="sha256:d48bcf6b03fa98f07df10332fb49d8c010786ddca6ab34cbba217684f533ff2e"/>
+    <dependencies>
+      <dep package="libcroco"/>
+      <dep package="freetype"/>
+      <dep package="gdk-pixbuf"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libtool" autogen-sh="configure" bootstrap="true">
+    <branch repo="ftp.gnu.org"
+            module="libtool/libtool-2.4.6.tar.gz" version="2.4.6"/>
+  </autotools>
+
+  <autotools id="gtk-doc" autogen-sh="configure"
+             autogenargs="--with-xml-catalog=$JHBUILD_PREFIX/share/xml/catalog">
+    <branch version="1.25" module="gtk-doc/1.25/gtk-doc-1.25.tar.xz"
+            hash="sha256:1ea46ed400e6501f975acaafea31479cea8f32f911dca4dff036f59e6464fd42"/>
+    <dependencies>
+      <dep package="libxml2"/>
+      <dep package="itstool"/>
+      <dep package="yelp-tools"/>
+      <dep package="gtk-osx-docbook"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libcroco" autogenargs="--disable-Bsymbolic"
+         autogen-sh="configure">
+    <branch module="libcroco/0.6/libcroco-0.6.12.tar.xz" version="0.6.12"
+        hash="sha256:ddc4b5546c9fb4280a5017e2707fbd4839034ed1aba5b7d4372212f34f84f860"/>
+  </autotools>
+
+  <autotools id="hicolor-icon-theme" autogen-sh="configure"
+         supports-non-srcdir-builds="no">
+    <branch module="hicolor-icon-theme-0.15.tar.xz" repo="icon-theme"
+            version="0.15"
+            hash="sha256:9cc45ac3318c31212ea2d8cb99e64020732393ee7630fa6c1810af5f987033cc"/>
+  </autotools>
+
+  <autotools id="libjpeg" autogen-sh="configure">
+    <branch module="jpegsrc.v9b.tar.gz" version="9b"
+            repo="jpeg"
+            checkoutdir="jpeg-9b"
+            hash="sha256:240fd398da741669bf3c90366f58452ea59041cacc741a489b99f2f6a0bad052">
+    </branch>
+  </autotools>
+
+  <autotools id="freetype-no-harfbuzz" autogen-sh="configure"
+             skip-autogen="never"
+             autogenargs="--without-bzip2 --without-harfbuzz">
+    <branch module="freetype/freetype-2.7.1.tar.gz" version="2.7.1"
+            repo="sourceforge"
+            hash="sha256:162ef25aa64480b1189cdb261228e6c5c44f212aac4b4621e28cf2157efb59f5">
+    </branch>
+    <dependencies>
+      <dep package="zlib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="harfbuzz" autogen-sh="configure"
+             autogenargs="--with-coretext --with-freetype --with-cairo --with-glib">
+    <branch repo="harfbuzz" module="harfbuzz-1.4.6.tar.bz2" version="1.4.6"
+            hash="sha256:21a78b81cd20cbffdb04b59ac7edfb410e42141869f637ae1d6778e74928d293">
+    </branch>
+    <dependencies>
+      <dep package="freetype-no-harfbuzz"/>
+      <dep package="ragel"/>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="xorg-util-macros">
+    <branch repo="freedesktop" version="1.19.0"
+            module="xorg/individual/util/util-macros-1.19.0.tar.bz2"/>
+  </autotools>
+
+  <autotools id="libepoxy" autogen-sh="configure">
+    <branch repo="github-tar" version="1.4.2"
+            module="anholt/libepoxy/releases/download/${version}/libepoxy-${version}.tar.xz"
+            hash="sha256:bea6fdec3d10939954495da898d872ee836b75c35699074cbf02a64fcb80d5b3"/>
+    <dependencies>
+      <dep package="xorg-util-macros"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="liborc" autogen-sh="configure">
+    <branch repo="gstreamer" module="orc/orc-0.4.26.tar.xz" version="0.4.26"
+            hash="sha256:7d52fa80ef84988359c3434e1eea302d077a08987abdde6905678ebcad4fa649"/>
+  </autotools>
+
+  <autotools id="fontconfig" autogen-sh="autoreconf"
+         autogenargs="--disable-docs">
+    <branch repo="fontconfig" version="2.12.1"
+            module="fontconfig-2.12.1.tar.bz2"
+            hash="sha256:b449a3e10c47e1d1c7a6ec6e2016cca73d3bd68fbbd4f0ae5cc6b573f7d6c7f3"/>
+    <dependencies>
+      <dep package="freetype-no-harfbuzz"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="freetype" autogen-sh="configure" skip-autogen="never"
+         autogenargs="--without-bzip2 --with-harfbuzz">
+    <branch module="freetype/freetype-2.7.1.tar.gz" version="2.7.1"
+            repo="sourceforge"
+            hash="sha256:162ef25aa64480b1189cdb261228e6c5c44f212aac4b4621e28cf2157efb59f5">
+    </branch>
+    <dependencies>
+      <dep package="harfbuzz"/>
+      <dep package="zlib"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="bison" autogen-sh="configure">
+    <branch repo="ftp.gnu.org" module="bison/bison-3.0.4.tar.xz"
+            version="3.0.4"
+            hash="sha256:a72428c7917bdf9fa93cb8181c971b6e22834125848cf1d03ce10b1bb0716fe1"/>
+  </autotools>
+
+  <autotools id="adwaita-icon-theme" autogen-sh="configure">
+    <branch module="adwaita-icon-theme/3.24/adwaita-icon-theme-3.24.0.tar.xz"
+            version="3.24.0" hash="sha256:ccf79ff3bd340254737ce4d28b87f0ccee4b3358cd3cd5cd11dc7b42f41b272a"/>
+    <dependencies>
+      <dep package="librsvg"/>
+      <dep package="hicolor-icon-theme"/>
+      <dep package="icon-naming-utils"/>
+    </dependencies>
+  </autotools>
+
+  <!-- INSTALL_PREFIX because it doesn't ue DESTDIR and LIBS="" to skip installing static libs -->
+  <autotools id="openssl" autogen-sh="Configure" autogenargs="shared zlib-dynamic"
+             autogen-template="%(srcdir)s/%(autogen-sh)s --prefix=%(prefix)s --openssldir=%(prefix)s/etc/ssl %(autogenargs)s"
+             makeinstallargs="INSTALL_PREFIX=$JHBUILD_PREFIX/_jhbuild/root-openssl LIBS= install_sw"
+             supports-parallel-builds="no">
+    <branch module="openssl-${version}.tar.gz" version="1.0.2k" repo="openssl"
+    hash="sha256:6b3977c61f2aedf0f96367dcfb5c6e578cf37e7b8d913b4ecb6643c3cb88d8c0"/>
+  </autotools>
+
+  <autotools id="python" autogenargs="--enable-shared"
+         autogen-sh="configure" supports-non-srcdir-builds="no">
+    <branch repo="python"
+        module="2.7.12/Python-2.7.12.tar.xz" version="2.7.12"
+        hash="sha256:d7837121dd5652a05fef807c361909d255d173280c4e1a4ded94d73d80a1f978">
+      <patch file="patches/python2-test_grammar.py-typo.patch" strip="1"/>
+      <patch file="patches/python2-linkflags.patch" strip="1"/>"/>
+      <patch file="patches/python2-setup.py-disabled_modules.diff" strip="1"/>"/>
+      <patch file="patches/python2-setup.py-remove-hardcoded.diff" strip="1"/>"/>
+    </branch>
+    <dependencies>
+      <dep package="gettext-runtime"/>
+      <dep package="readline"/>
+      <dep package="openssl"/>
+      <dep package="libxml2"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gettext-tools" autogen-sh="configure"
+             autogenargs="--without-emacs --disable-java --disable-native-java --disable-libasprintf --disable-csharp --with-included-glib">
+    <branch repo="ftp.gnu.org" source-subdir="gettext-tools"
+            module="gettext/gettext-0.19.7.tar.xz" version="0.19.7"/>
+  </autotools>
+
+  <autotools id="gettext-runtime" autogen-sh="configure"
+         autogenargs="--without-emacs --disable-java --disable-native-java --disable-libasprintf --disable-csharp">
+    <branch repo="ftp.gnu.org" source-subdir="gettext-runtime"
+            module="gettext/gettext-0.19.7.tar.xz" version="0.19.7"/>
+  </autotools>
+
+  <autotools id="gst-libav" supports-non-srcdir-builds="no"
+    autogen-sh="configure"
+    autogenargs="--enable-gpl --disable-tests --disable-mmx --with-libav-extra-configure='--disable-yasm'">
+    <branch repo="gstreamer" version="1.8.3"
+    module="gst-libav/gst-libav-1.8.3.tar.xz"
+    hash="sha256:9006a05990089f7155ee0e848042f6bb24e52ab1d0a59ff8d1b5d7e33001a495"/>
+    <dependencies>
+        <dep package="gstreamer-1.0"/>
+        <dep package="gst-plugins-base-1.0"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="glib" autogen-sh="autoreconf"
+             autogenargs="--with-pcre=internal">
+    <branch module="glib/2.52/glib-2.52.2.tar.xz"  version="2.52.2"
+            hash="sha256:f00e5d9e2a2948b1da25fcba734a6b7a40f556de8bc9f528a53f6569969ac5d0">
+    </branch>
+    <dependencies>
+        <dep package="libffi"/>
+        <dep package="gettext-runtime"/>
+        <dep package="gtk-doc"/>
+        <dep package="libffi"/>
+        <dep package="zlib"/>
+    </dependencies>
+  </autotools>
+
+ <autotools id="atk" autogen-sh="configure">
+    <branch module="atk/2.24/atk-${version}.tar.xz" version="2.24.0"
+            hash="sha256:bb2daa9a808c73a7a79d2983f333e0ba74be42fc51e3ba1faf2551a636487a49"/>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gtk+-3.0" autogen-sh="autogen.sh"
+    autogenargs="--enable-quartz-backend --enable-quartz-relocation">
+    <branch module="gtk+/3.22/gtk+-3.22.15.tar.xz" version="3.22.15"
+        hash="sha256:c8a012c2a99132629ab043f764a2b7cb6388483a015cd15c7a4288bec3590fdb">
+    </branch>
+    <dependencies>
+        <dep package="glib"/>
+        <dep package="pango"/>
+        <dep package="atk"/>
+        <dep package="cairo"/>
+        <dep package="gdk-pixbuf"/>
+        <dep package="gobject-introspection"/>
+        <dep package="libepoxy"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="ragel" autogen-sh='autoreconf'>
+    <branch repo="ragel" module="ragel-${version}.tar.gz" version="6.10"
+            hash="sha256:5f156edb65d20b856d638dd9ee2dfb43285914d9aa2b6ec779dac0270cd56c3f">
+    </branch>
+  </autotools>
+
+  <autotools id="sqlite" autogenargs="--disable-tcl --enable-threadsafe"
+         autogen-sh="configure">
+    <branch module="2016/sqlite-autoconf-3140100.tar.gz" version='3.14.1'
+        repo="sqlite"
+        hash="sha256:bc7182476900017becb81565ecea7775d46ab747a97281aa610f4f45881c47a6"/>
+  </autotools>
+
+  <autotools id="libtiff" autogen-sh="configure" autogenargs="--without-x">
+    <branch version="4.0.7" module="libtiff/tiff-${version}.tar.gz"
+        repo="libtiff"
+        hash="sha256:9f43a2cfb9589e5cecaa66e16bf87f814c945f22df7ba600d63aac4632c4f019"/>
+    <dependencies>
+      <dep package="libjpeg"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="yelp-xsl">
+    <branch version="3.20.1" module="yelp-xsl/3.20/yelp-xsl-3.20.1.tar.xz"
+            hash="sha256:dc61849e5dca473573d32e28c6c4e3cf9c1b6afe241f8c26e29539c415f97ba0"/>
+    <dependencies>
+      <dep package="libxml2"/>
+      <dep package="libxslt"/>
+      <dep package="itstool"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="yelp-tools">
+    <branch version="3.18.0" module="yelp-tools/3.18/yelp-tools-3.18.0.tar.xz"
+            hash="sha256:c6c1d65f802397267cdc47aafd5398c4b60766e0a7ad2190426af6c0d0716932"/>
+    <dependencies>
+      <dep package="libxml2"/>
+      <dep package="libxslt"/>
+      <dep package="itstool"/>
+      <dep package="yelp-xsl"/>
+    </dependencies>
+  </autotools>
+
+ <autotools id="pango"  autogen-sh="autoreconf">
+    <branch version="1.40.5" module="pango/1.40/pango-${version}.tar.xz"
+            hash="sha256:24748140456c42360b07b2c77a1a2e1216d07c056632079557cd4e815b9d01c9">
+    </branch>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="gobject-introspection"/>
+      <dep package="freetype"/>
+     </dependencies>
+  </autotools>
+
+  <autotools id="gdk-pixbuf" autogen-sh="configure">
+    <branch module="gdk-pixbuf/2.34/gdk-pixbuf-2.34.0.tar.xz" version="2.34.0"
+            hash="sha256:d55e5b383ee219bd0e23bf6ed4427d56a7db5379729a6e3e0a0e0eba9a8d8879"/>
+    <dependencies>
+      <dep package="libtiff"/>
+      <dep package="libpng"/>
+      <dep package="libjpeg"/>
+      <dep package="gobject-introspection"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gobject-introspection" autogen-sh="configure">
+    <branch module="gobject-introspection/1.52/gobject-introspection-${version}.tar.xz"
+            version="1.52.1"
+            hash="sha256:2ed0c38d52fe1aa6fc4def0c868fe481cb87b532fc694756b26d6cfab29faff4">
+      <patch file="patches/gi-make-shared-library-in-cairo-1.0.gir-an-absolute-pat.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="cairo"/>
+      <dep package="python"/>
+    </dependencies>
+  </autotools>
+
+  <distutils id="py2cairo">
+    <branch repo="github-tar"
+            version="1.13.1"
+            module="pygobject/pycairo/releases/download/v${version}/pycairo-${version}.tar.gz"
+            checkoutdir="pycairo-python2-${version}"
+            hash="sha256:d8f58de67ddd01eda9e5112de57599b7d0154d71c9474821e98866c228794641"/>
+  </distutils>
+
+   <autotools id="pygobject3" autogenargs="--with-python=python2">
+    <branch version="3.25.1" module="pygobject/3.25/pygobject-${version}.tar.xz"
+        hash="sha256:8728bb27078f7ee45c431ccbc237a58fb6d6eb1b7a0668bbe29eb107267bd736"/>
+    <dependencies>
+      <dep package="py2cairo"/>
+      <dep package="gobject-introspection"/>
+      <dep package="glib"/>
+      <dep package="python"/>
+    </dependencies>
+  </autotools>
+
+  <distutils id="setuptools">
+      <branch repo="pypi" checkoutdir="setuptools-28.7.1" module="1d/04/97e37cf85972ea19364c22db34ee8192db3876a80ed5bffd6413dcdabe2d/setuptools-28.7.1.tar.gz"
+          version="28.7.1" md5sum="263e2e3858187e8ea20b4db3ff8770bb"/>
+  </distutils>
+
+  <distutils id="futures">
+      <branch repo="pypi" checkoutdir="futures-3.0.5" module="55/db/97c1ca37edab586a1ae03d6892b6633d8eaa23b23ac40c7e5bbc55423c78/futures-3.0.5.tar.gz"
+          version="3.0.5" md5sum="ced2c365e518242512d7a398b515ff95"/>
+    <dependencies>
+      <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="dmgbuild">
+    <branch repo="pypi" checkoutdir="dmgbuild-1.1.0" module="4b/12/a97aeae9b91dbf97cde1c06587db2ad9e056cd966de61c60009b04c2f9b4/dmgbuild-1.1.0.tar.gz"
+        version="1.1.0" md5sum="bcccf26bcd1a73c57be77ff4a6301551"/>
+    <dependencies>
+      <dep package="setuptools"/>
+      <dep package="six"/>
+      <dep package="mac_alias"/>
+      <dep package="ds_store"/>
+      <dep package="pyobjc-framework-Quartz"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pycodestyle">
+    <branch repo="pypi" checkoutdir="pycodestyle-2.2.0" module="43/9f/56e824b197398582b0c1aaaa2272560bc51f395fe3e45e1dd88de4bb24dc/pycodestyle-2.2.0.tar.gz"
+        version="2.2.0" md5sum="642c31fc2a72a55a4acdf8ac46d5fb64"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pyflakes">
+    <branch repo="pypi" checkoutdir="pyflakes-1.3.0" module="9f/48/927b1bf3e15d3dadfcfafb505177a62cdabcb78cf7eac4f31f180d5b1e26/pyflakes-1.3.0.tar.gz"
+        version="1.3.0" md5sum="d66478aaff1d003ddc7fc1759a74e1e2"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="six">
+    <branch repo="pypi" checkoutdir="six-1.10.0" module="b3/b2/238e2590826bfdd113244a40d9d3eb26918bd798fc187e2360a8367068db/six-1.10.0.tar.gz"
+        version="1.10.0" md5sum="34eed507548117b2ab523ab14b2f8b55"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="mac_alias">
+    <branch repo="pypi" checkoutdir="mac_alias-1.1.0" module="a6/f2/360810459fa97d20c45327d287c468e34930205912e7159c483359b03551/mac_alias-1.1.0.tar.gz"
+        version="1.1.0" md5sum="ad364059987b16ef10e0c1cdaf9877f1"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="biplist">
+    <branch repo="pypi" checkoutdir="biplist-1.0.1" module="c4/30/c2a6f5f082c55aaa6bd683943c8ff79270eed145597b8dc253fb97b0dc17/biplist-1.0.1.tar.gz"
+        version="1.0.1" md5sum="b461c526cb2a80ab302b4953ae950379"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="py">
+    <branch repo="pypi" checkoutdir="py-1.4.31" module="f4/9a/8dfda23f36600dd701c6722316ba8a3ab4b990261f83e7d3ffc6dfedf7ef/py-1.4.31.tar.gz"
+        version="1.4.31" md5sum="5d2c63c56dc3f2115ec35c066ecd582b"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pytest">
+    <branch repo="pypi" checkoutdir="pytest-2.9.2" module="f0/ee/6e2522c968339dca7d9abfd5e71312abeeb5ee902e09b4daf44f07b2f907/pytest-2.9.2.tar.gz"
+        version="2.9.2" md5sum="b65c2944dfaa0efb62c0239afb424f5b"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    <dep package="py"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="ds_store">
+    <branch repo="pypi" checkoutdir="ds_store-1.0.1" module="a8/4b/4f8b1dff01bd93ea0ffbf3006818e2a34a2a2d62ec774cff734c736dc10a/ds_store-1.0.1.tar.gz"
+        version="1.0.1" md5sum="3ec322188a0304959e17cddf402ea8c9"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    <dep package="six"/>
+    <dep package="biplist"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="certifi">
+    <branch repo="pypi" checkoutdir="certifi-2017.4.17" module="dd/0e/1e3b58c861d40a9ca2d7ea4ccf47271d4456ae4294c5998ad817bd1b4396/certifi-2017.4.17.tar.gz"
+        version="2017.4.17" md5sum="db40445044feda1437ce3ccd5fc28a57"/>
+  </distutils>
+
+  <distutils id="feedparser">
+    <branch repo="pypi" checkoutdir="feedparser-5.2.1" module="source/f/feedparser/feedparser-5.2.1.tar.bz2"
+        version="5.2.1"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="mutagen">
+    <branch repo="mutagen" checkoutdir="mutagen-1.37" module="mutagen-1.37.tar.gz"
+        version="1.37" hash="sha256:539553d3f1ffd890c74f64b819750aef0316933d162c09798c9e7eaf334ae760"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="musicbrainzngs">
+    <branch repo="github-tar" checkoutdir="musicbrainzngs-0.6" module="alastair/python-musicbrainzngs/archive/v0.6.tar.gz"
+        version="0.6"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pyobjc-core">
+    <branch repo="pypi" checkoutdir="pyobjc-core-3.1.1" module="source/p/pyobjc-core/pyobjc-core-3.1.1.tar.gz"
+        version="3.1.1" md5sum="e071bc40a3341a97d2c91c49fc3783cb"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pyobjc-framework-Cocoa">
+    <branch repo="pypi" checkoutdir="pyobjc-framework-Cocoa-3.1.1" module="source/p/pyobjc-framework-Cocoa/pyobjc-framework-Cocoa-3.1.1.tar.gz"
+        version="3.1.1" md5sum="2832205d33d88ea53289563bd61771cf"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    <dep package="pyobjc-core"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pyobjc-framework-Quartz">
+    <branch repo="pypi" checkoutdir="pyobjc-framework-Quartz-3.1.1" module="source/p/pyobjc-framework-Quartz/pyobjc-framework-Quartz-3.1.1.tar.gz"
+        version="3.1.1" md5sum="fadebaecc17338bad9aa1ae45c7fae77"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    <dep package="pyobjc-core"/>
+    <dep package="pyobjc-framework-Cocoa"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="pyobjc">
+    <branch repo="pypi" checkoutdir="pyobjc-3.1.1" module="source/p/pyobjc/pyobjc-3.1.1.tar.gz"
+        version="3.1.1" md5sum="36b8265a332c3b2f59c1fc7f23bcafa5"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    <dep package="pyobjc-core"/>
+    <dep package="pyobjc-framework-Cocoa"/>
+    <dep package="pyobjc-framework-Quartz"/>
+    </dependencies>
+  </distutils>
+
+  <distutils id="faulthandler">
+    <branch repo="pypi" checkoutdir="faulthandler-2.4" module="30/22/d65d1357a98ef5d28e1fd316f23a307c953d459d0239807b3e4350345d18/faulthandler-2.4.tar.gz"
+        version="2.4" md5sum="110960933b0902334e8804eb4ea20750"/>
+    <dependencies>
+    <dep package="setuptools"/>
+    </dependencies>
+  </distutils>
+
+  <autotools id="gst-plugins-base-1.0" autogenargs="--disable-tests --disable-x --disable-xvideo  --disable-gtk-doc" supports-non-srcdir-builds="no"
+    makeargs="ERROR_CFLAGS=" autogen-sh="configure">
+    <branch repo="gstreamer" module="gst-plugins-base/gst-plugins-base-${version}.tar.xz"
+            version="1.10.4" hash="sha256:f6d245b6b3d4cb733f81ebb021074c525ece83db0c10e932794b339b8d935eb7"/>
+    <dependencies>
+      <dep package="gstreamer-1.0"/>
+      <dep package="liborc"/>
+      <dep package="libogg"/>
+      <dep package="libvorbis"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gst-plugins-good-1.0" autogenargs="-- --disable-tests --disable-x --disable-xvideo --disable-osx-video --disable-gtk-doc" supports-non-srcdir-builds="no"
+    makeargs="ERROR_CFLAGS=">
+    <branch repo="gstreamer" module="gst-plugins-good/gst-plugins-good-${version}.tar.xz"
+            version="1.10.4" hash="sha256:8a86c61434a8c44665365bd0b3557a040937d1f44bf69caee4e9ea816ce74d7e"/>
+    <dependencies>
+      <dep package="gstreamer-1.0"/>
+      <dep package="gst-plugins-base-1.0"/>
+      <dep package="libspeex"/>
+      <dep package="libflac"/>
+      <dep package="libsoup"/>
+      <dep package="wavpack"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="wavpack" autogen-sh="configure">
+    <branch module="wavpack-${version}.tar.bz2"
+            repo="wavpack" version="4.80.0"
+            hash="sha256:79182ea75f7bd1ca931ed230062b435fde4a4c2e0dbcad048007bd1ef1e66be9">
+    </branch>
+  </autotools>
+
+  <autotools id="gst-plugins-bad-1.0" supports-non-srcdir-builds="no"
+             autogenargs="HAVE_CXX=yes
+    --disable-accurip
+    --disable-adpcmdec
+    --disable-adpcmenc
+    --disable-aiff
+    --disable-asfmux
+    --disable-audiofxbad
+    --disable-audiomixer
+    --disable-audiovisualizers
+    --disable-autoconvert
+    --disable-bayer
+    --disable-camerabin2
+    --disable-coloreffects
+    --disable-compositor
+    --disable-dataurisrc
+    --disable-debugutils
+    --disable-dvbsuboverlay
+    --disable-dvdspu
+    --disable-festival
+    --disable-fieldanalysis
+    --disable-freeverb
+    --disable-frei0r
+    --disable-gaudieffects
+    --disable-gdp
+    --disable-geometrictransform
+    --disable-id3tag
+    --disable-inter
+    --disable-interlace
+    --disable-ivfparse
+    --disable-ivtc
+    --disable-jp2kdecimator
+    --disable-jpegformat
+    --disable-librfb
+    --disable-liveadder
+    --disable-midi
+    --disable-mpegdemux
+    --disable-mpegpsmux
+    --disable-mpegtsdemux
+    --disable-mpegtsmux
+    --disable-mxf
+    --disable-pcapparse
+    --disable-pnm
+    --disable-rawparse
+    --disable-removesilence
+    --disable-sdp
+    --disable-segmentclip
+    --disable-siren
+    --disable-smooth
+    --disable-speed
+    --disable-stereo
+    --disable-subenc
+    --disable-videofilters
+    --disable-videoparsers
+    --disable-videosignal
+    --disable-vmnc
+    --disable-y4m
+    --disable-yadif
+    --disable-bz2
+    --disable-dash
+    --disable-decklink
+    --disable-gl
+    --disable-hls
+    --disable-rsvg
+    --disable-shm
+    --disable-smoothstreaming
+    --disable-apple_media
+    --disable-gtk3
+    --disable-dtls
+    --enable-cocoa=no --enable-x11=no --enable-opengl=no --disable-gtk-doc"
+             makeargs="ERROR_CFLAGS=">
+    <branch repo="gstreamer" version="1.10.4"
+            module="gst-plugins-bad/gst-plugins-bad-${version}.tar.xz"
+            hash="sha256:23ddae506b3a223b94869a0d3eea3e9a12e847f94d2d0e0b97102ce13ecd6966"/>
+    <dependencies>
+      <dep package="gstreamer-1.0"/>
+      <dep package="gst-plugins-base-1.0"/>
+      <dep package="faad2"/>
+      <dep package="libvorbis"/>
+      <dep package="libopus"/>
+      <dep package="libmpg123"/>
+      <dep package="bs2b"/>
+      <dep package="chromaprint"/>
+      <dep package="soundtouch"/>
+    </dependencies>
+  </autotools>
+
+  <!-- CMAKE_INSTALL_NAME_DIR is needed to get an absolute path for the install name (otool -D) -->
+  <cmake id="chromaprint" cmakeargs="-DCMAKE_BUILD_TYPE=Release -DBUILD_FRAMEWORK=OFF -DCMAKE_INSTALL_NAME_DIR='${prefix}/lib'">
+        <branch repo="chromaprint" checkoutdir="chromaprint-1.3.1" module="chromaprint-1.3.1.tar.gz"
+            version="1.3.1" hash="sha256:8f95a011e6fe3a75281520daa9376b7f028300e20a5be9af08ef9c851d4bb581">
+        </branch>
+  </cmake>
+
+  <autotools id="soundtouch" autogen-sh="autoreconf">
+        <branch repo="soundtouch" checkoutdir="soundtouch-1.9.2" module="soundtouch-1.9.2.tar.gz"
+            version="1.9.2" hash="sha256:caeb86511e81420eeb454cb5db53f56d96b8451d37d89af6e55b12eb4da1c513">
+        </branch>
+  </autotools>
+
+  <autotools id="gst-plugins-ugly-1.0" autogenargs="--disable-tests --disable-gtk-doc" supports-non-srcdir-builds="no"
+    makeargs="ERROR_CFLAGS=">
+    <branch repo="gstreamer" module="gst-plugins-ugly/gst-plugins-ugly-${version}.tar.xz"
+            version="1.10.4" hash="sha256:6386c77ca8459cba431ed0b63da780c7062c7cc48055d222024d8eaf198ffa59"/>
+    <dependencies>
+      <dep package="gstreamer-1.0"/>
+      <dep package="gst-plugins-base-1.0"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gstreamer-1.0" autogenargs="--disable-tests --disable-gtk-doc" supports-non-srcdir-builds="no"
+    makeargs="ERROR_CFLAGS=">
+    <branch repo="gstreamer" module="gstreamer/gstreamer-${version}.tar.xz"
+            version="1.10.4" hash="sha256:50c2f5af50a6cc6c0a3f3ed43bdd8b5e2bff00bacfb766d4be139ec06d8b5218">
+    </branch>
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="gobject-introspection"/>
+      <dep package="bison"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libogg" autogen-sh="configure">
+    <branch module="ogg/libogg-1.3.2.tar.xz"
+        repo="xiph" version="1.3.2" hash="sha256:3f687ccdd5ac8b52d76328fbbfebc70c459a40ea891dbf3dccb74a210826e79b"/>
+  </autotools>
+
+  <autotools id="libvorbis" autogen-sh="configure" autogenargs="--disable-oggtest">
+    <branch module="vorbis/libvorbis-1.3.5.tar.xz"
+        repo="xiph" version="1.3.5" hash="sha256:54f94a9527ff0a88477be0a71c0bab09a4c3febe0ed878b24824906cd4b0e1d1"/>
+  </autotools>
+
+  <autotools id="libspeex" autogen-sh="configure">
+    <branch module="speex/speex-1.2.0.tar.gz"
+        repo="xiph" version="1.2.0" hash="sha256:eaae8af0ac742dc7d542c9439ac72f1f385ce838392dc849cae4536af9210094"/>
+    <dependencies>
+      <dep package="libogg"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libmpg123"  autogen-sh="configure">
+      <branch module="mpg123-1.24.0.tar.bz2"
+          repo="mpg123" version="1.24.0" hash="sha256:55fb169a7711938f5df0497d1ffe28419fbef50011dc01d00b216379e6a2256c">
+      </branch>
+  </autotools>
+
+  <autotools id="libflac"  autogen-sh="autoreconf" autogenargs="--disable-silent-rules --disable-xmms-plugin" makeargs="OBJ_FORMAT=macho">
+    <branch module="flac/flac-1.3.1.tar.xz"
+        repo="xiph" version="1.3.1" hash="sha256:4773c0099dba767d963fd92143263be338c48702172e8754b9bc5103efe1c56c"/>
+    <dependencies>
+      <dep package="libogg"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="faad2" autogen-sh="autoreconf"
+             autogenargs="-without-bmp --without-xmms --without-drm --without-mpeg4ip">
+    <branch repo="sourceforge" version="2.7"
+            module="faac/faad2-src/faad2-2.7/faad2-2.7.tar.bz2">
+      <patch file="patches/faad2-2.7-ac-config-headers.patch" strip="1"/>
+    </branch>
+  </autotools>
+
+  <autotools id="bs2b" autogen-sh="autoreconf"
+             autogenargs="">
+    <branch repo="sourceforge" version="3.1.0"
+            module="bs2b/libbs2b/3.1.0/libbs2b-3.1.0.tar.gz">
+        <patch file="patches/libbs2b-no-bs2bconvert.diff" strip="1"/>
+    </branch>
+  </autotools>
+
+  <autotools id="libopus" autogen-sh="configure" autogenargs="--disable-doc">
+    <branch module="opus/opus-1.1.4.tar.gz"
+        repo="xiph" version="1.1.4" hash="sha256:9122b6b380081dd2665189f97bfd777f04f92dc3ab6698eea1dbb27ad59d8692"/>
+  </autotools>
+
+  <autotools id="libsoup" autogen-sh="configure" autogenargs="--disable-more-warnings --disable-silent-rules --without-gnome --enable-introspection --disable-vala">
+    <branch repo="ftp.gnome.org" module="libsoup/2.58/libsoup-${version}.tar.xz"
+            version="2.58.1" hash="sha256:62c669f557de745b7b20ba9d5b74d839c95e4c9cea1a5ab7f3da5531a1aeefb9" />
+    <dependencies>
+      <dep package="glib"/>
+      <dep package="glib-networking"/>
+      <dep package="gobject-introspection"/>
+      <dep package="sqlite"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="glib-networking" autogen-sh="configure"
+             autogenargs="--without-ca-certificates set_more_warnings=no">
+    <branch module="glib-networking/2.50/glib-networking-${version}.tar.xz"
+            hash="sha256:3f1a442f3c2a734946983532ce59ed49120319fdb10c938447c373d5e5286bee"
+            version="2.50.0">
+        <!-- This allows us to set GTLS_SYSTEM_CA_FILE at runtime to a CA file -->
+        <patch file="patches/glib-networking-gtls-ca-env-var.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="gnutls"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gnutls" autogen-sh="configure"
+         autogenargs="--with-libgcrypt --without-p11-kit">
+    <branch repo="ftp.gnutls.org" version="3.5.11"
+            module="gcrypt/gnutls/v3.5/gnutls-${version}.tar.xz"
+            hash="sha256:51765cc5579e250da77fbd7871507c517d01b15353cc40af7b67e9ec7b6fe28f"/>
+    <dependencies>
+      <dep package="nettle" />
+      <dep package="libgcrypt" />
+      <dep package="libtasn1" />
+      <dep package="zlib"/>
+      <dep package="libunistring"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libxml2" autogen-sh="configure"
+             autogenargs='--libdir="$JHBUILD_LIBDIR" --without-python'>
+    <branch version="2.9.4" module="libxml2-2.9.4.tar.gz"
+        repo="xmlsoft.org"
+        hash="sha256:ffb911191e509b966deb55de705387f14156e1a56b21824357cdf0053233633c"/>
+  </autotools>
+
+  <autotools id="libxml2-python" autogen-sh="configure"
+             autogenargs='--libdir="$JHBUILD_LIBDIR" --with-python'>
+    <branch version="2.9.4" module="libxml2-2.9.4.tar.gz"
+        repo="xmlsoft.org"
+        hash="sha256:ffb911191e509b966deb55de705387f14156e1a56b21824357cdf0053233633c"/>
+    <dependencies>
+      <dep package="python" />
+    </dependencies>
+  </autotools>
+
+  <autotools id="libxslt" autogen-sh="configure">
+    <branch version="1.1.29" module="libxslt-1.1.29.tar.gz"
+        repo="xmlsoft.org"
+        hash="sha256:b5976e3857837e7617b29f2249ebb5eeac34e249208d31f1fbf7a6ba7a4090ce"/>
+    <dependencies>
+      <dep package="libxml2"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="gtk-mac-integration-python" autogen-sh="configure"
+             autogenargs="--enable-python">
+    <branch module="gtk-mac-integration/2.0/gtk-mac-integration-2.0.8.tar.xz"
+            version="2.0.8"
+            hash="sha256:74fce9dbc5efe4e3d07a20b24796be1b1d6c3ac10a0ee6b1f1d685c809071b79">
+    </branch>
+    <dependencies>
+        <dep package="gtk+-3.0"/>
+        <dep package="pygobject3"/>
+    </dependencies>
+  </autotools>
+
+  <autotools id="libtasn1" supports-non-srcdir-builds="no"
+         autogen-sh="configure">
+    <branch repo="ftp.gnu.org" version="4.10"
+        module="libtasn1/libtasn1-${version}.tar.gz"
+        hash="sha256:681a4d9a0d259f2125713f2e5766c5809f151b3a1392fd91390f780b4b8f5a02"/>
+  </autotools>
+
+  <autotools id="libgcrypt" autogen-sh="configure" autogenargs="--disable-asm --disable-avx-support --disable-avx2-support ">
+    <branch repo='ftp.gnupg.org' version="1.7.6"
+        module="gcrypt/libgcrypt/libgcrypt-${version}.tar.bz2"
+        hash="sha256:626aafee84af9d2ce253d2c143dc1c0902dda045780cc241f39970fc60be05bc">
+    </branch>
+    <dependencies>
+      <dep package="libgpg-error" />
+    </dependencies>
+  </autotools>
+
+  <autotools id="libunistring" autogen-sh="configure"
+          supports-non-srdir-builds="no">
+    <branch repo="ftp.gnu.org" version="0.9.7"
+        module="libunistring/libunistring-${version}.tar.xz"
+        hash="sha256:2e3764512aaf2ce598af5a38818c0ea23dedf1ff5460070d1b6cee5c3336e797"/>
+  </autotools>
+
+  <autotools id="libgpg-error" autogen-sh="configure"
+          supports-non-srdir-builds="no">
+    <branch repo="ftp.gnupg.org" version="1.27"
+        module="gcrypt/libgpg-error/libgpg-error-${version}.tar.bz2"
+        hash="sha256:4f93aac6fecb7da2b92871bb9ee33032be6a87b174f54abf8ddf0911a22d29d2"/>
+  </autotools>
+
+  <autotools id="gmp">
+    <branch repo="ftp.gnu.org" module="gmp/gmp-${version}.tar.bz2" version="6.1.2"
+            hash="sha256:5275bb04f4863a13516b2f39392ac5e272f5e1bb8057b18aec1c9b79d73d8fb2">
+    </branch>
+  </autotools>
+
+   <autotools id="nettle" autogen-sh="autoreconf" autogen-args="-- --enable-shared --disable-openssl"
+          supports-non-srdir-builds="no">
+    <branch repo="ftp.gnu.org" version="3.3"
+        module="nettle/nettle-${version}.tar.gz"
+        hash="sha256:46942627d5d0ca11720fec18d81fc38f7ef837ea4197c1f630e71ce0d470b11e"/>
+    <dependencies>
+      <dep package="gmp" />
+    </dependencies>
+  </autotools>
+
+</moduleset>
