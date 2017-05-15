@@ -7,25 +7,26 @@ your application packages with pyinstaller, as it works consistently across
 OSX and Windows.
 
 * To build applications for OSX, see the osx_bundle directory
-* To build applications for Windows, see the win_bundle directory
+* To build applications for Windows, see the win_installer directory
 * To build applications for Linux, this SDK isn't really necessary
 
 Usage
 -----
 
 This SDK is designed to be used alongside your application. You set up a
-directory with the correct configuration files, and then run `create_links.sh`
-to create symlinks in your application directory. Then you can run the 
-SDK commands from there.
+directory with the correct configuration files, then you can run the SDK
+from that directory. If you're packaging for OS X, you can run `create_links.sh`
+to create symlinks in your application directory for easier bootstrapping:
 
-If the target application is already set up to use this SDK, you can create
-convenience symlinks by running the `create_links.sh` script.
-
-  cd my_app/installer
-  /path/to/sdk/create_links.sh windows
-
+```
   cd my_app/installer
   /path/to/sdk/create_links.sh osx
+```
+
+If you're packing for Windows, you need to have [MSYS2](http://www.msys2.org/)
+set up and running. Unfortunately, MSYS2 doesn't create symlinks by default,
+so `create_links.sh` won't help you here. See the `win_installer` directory
+for more information.
 
 Contributing
 ============
