@@ -19,7 +19,7 @@ skip.append("libiconv")
 # Some packages don't work in debug mode
 #setup_debug()
 
-setup_sdk(target="10.9", sdk_version="native")
+setup_sdk(target="10.9", sdk_version=os.environ.get("JHBUILD_SDK_VERSION", "native"))
 
 os.environ["GTLS_SYSTEM_CA_FILE"] = os.path.join(
     prefix, "lib/python2.7/site-packages/certifi/cacert.pem")

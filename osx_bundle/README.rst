@@ -18,24 +18,35 @@ Verify that Xcode and git is installed and in your ``$PATH`` by invoking ``git
 --version`` and ``gcc --version``. Also make sure that other pacakge managers
 like homebrew or macports aren't in your ``$PATH``.
 
-(Tested on OS X 10.10)
+(Tested on OS X 10.12)
 
 1) Call ``bootstrap_osx.sh`` to install jhbuild and set up dummy ``$HOME`` as base.
 2) Call ``build_osx_sdk.sh`` to download and build all the dependencies.
    This should not lead to errors; if it does please file a bug.
 
-Note: XCode 7.x has some compile errors, but XCode 6.x works fine.
+You may get an error that looks like this:
+
+    EnvironmentError: MacOSX10.12.sdk not found
+
+It's ok! This means that you don't have an SDK installed that matches your current
+version of OSX. This seems to happen when you upgrade XCode. You can override
+which SDK is used via the following environment variable:
+
+    export JHBUILD_SDK_VERSION=10.13
+
+Just replace the SDK version with whatever version is present in your 
+`/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs`
+directory.
+
+Note: pyobjc isn't compatible with the 10.13 SDK at this time, so you may need
+to download an old SDK from https://github.com/phracker/MacOSX-SDKs
 
 Development
 -----------
 
-* After ``bootstrap.sh`` has finished executing ``source env.sh`` will put you
+* After ``bootstrap_osx.sh`` has finished executing ``source env.sh`` will put you
   in the build environment. After that jhbuild can be used directly.
-* ``fetch_modules()`` downloads the git master of the gtk-osx module set
-  and replaces the modules under "modulessets" and the
-  ``misc/gtk-osx-jhbuildrc`` file. Doing so so should ideally be followed by a
-  review of the sdk module to reduce duplication and a rebuilt to verify
-  that everything still works.
+
 
 Using this as a development environment
 ---------------------------------------
@@ -59,17 +70,9 @@ a GTK/GST python application are installed into the jhbuild environment.
   your application (there's a bug with the normal pip command)
 * Install your application
 
-Once your app is installed, then you can use the installed version of
-pyinstaller to build the application bundle. Something like::
-
-  pyinstaller -w myprogram.py
-
-The version of pyinstaller included with this SDK build environment has the
-correct build/runtime hooks to properly package up a PyGObject application.
-However, refer to the pyinstaller documentation for more information on how
-to build your application.
-
-TODO: integration with the Windows environment scripts
+Once your app is installed, then you can use something like pyinstaller to
+bundle your application. The latest version of pyinstaller should have the
+proper hooks included to package GTK/GST applications on OSX.
 
 Content Description
 -------------------
