@@ -70,6 +70,9 @@
               href="http://tango.freedesktop.org/releases/"/>
   <repository type="tarball" name="nasm"
               href="http://www.nasm.us/pub/nasm/releasebuilds/"/>
+  
+  <repository type="tarball" name="oracle"
+              href="http://download.oracle.com/"/>
 
   <metamodule id="meta-bootstrap">
     <dependencies>
@@ -96,6 +99,7 @@
       <dep package="python-cairo"/>
       <dep package="python-gobject"/>
       <dep package="python-pyobjc"/>
+      <dep package="pybsddb" />
     </dependencies>
   </metamodule>
 
@@ -1113,6 +1117,32 @@
         hash="sha256:46942627d5d0ca11720fec18d81fc38f7ef837ea4197c1f630e71ce0d470b11e"/>
     <dependencies>
       <dep package="gmp" />
+    </dependencies>
+  </autotools>
+  
+  <autotools id="berkeleydb-nonsrctree" autogen-sh="configure"
+         autogen-template="%(srcdir)s/dist/%(autogen-sh)s --prefix %(prefix)s  %(autogenargs)s" >
+
+    <branch module="berkeley-db/db-${version}.NC.tar.gz" version="5.3.28"
+            repo="oracle"
+            hash="sha256:76a25560d9e52a198d37a31440fd07632b5f1f8f9f2b6d5438f4bc3e7c9013ef">
+      <patch file="patches/berkeleydb-atomic.patch" strip="1"/>
+    </branch>
+  </autotools>
+
+  <autotools id="pybsddb"
+             autogen-template="/bin/bash %(srcdir)s/autogen.sh %(prefix)s"
+             check-target="false" makeargs="build"
+             supports-non-srcdir-builds="no">
+    <branch repo="pypi.org"
+            module="b/bsddb3/bsddb3-5.3.0.tar.gz"
+            version="5.3.0"
+            hash="md5:d5aa4f293c4ea755e84383537f74be82">
+      <patch file="patches/pybsddb-autogen.patch" strip="1"/>
+    </branch>
+    <dependencies>
+      <dep package="python"/>
+      <dep package="berkeleydb-nonsrctree"/>
     </dependencies>
   </autotools>
 

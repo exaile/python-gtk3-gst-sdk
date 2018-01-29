@@ -1,0 +1,26 @@
+--- a/autogen.sh	1969-12-31 19:00:00.000000000 -0500
++++ b/autogen.sh	2018-01-29 02:45:57.000000000 -0500
+@@ -0,0 +1,21 @@
++#!/bin/bash
++
++PREFIX=$1
++DHACK='${DESTDIR}'
++
++echo "#!/bin/bash" > configure
++
++cat >Makefile <<EOL
++DESTDIR ?= overridden
++.PHONY: build install
++
++build:
++	pwd
++	BERKELEYDB_DIR=$PREFIX python setup.py build
++
++install:
++	BERKELEYDB_DIR=$PREFIX python setup.py install --prefix=$PREFIX --root=$DHACK
++
++clean:
++	BERKELEYDB_DIR=$PREFIX python setup.py clean
++
++EOL
++
