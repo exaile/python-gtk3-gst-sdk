@@ -16,6 +16,11 @@ cd "$DIR"
 export HOME="$DIR/_home"
 export QL_OSXBUNDLE_JHBUILD_DEST="$DIR/_jhbuild"
 
-export PATH="$HOME/.local/bin:$PATH"
+# clean path so that only system things are included
+export PATH="$HOME/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 export QL_OSXBUNDLE_MODULESETS_DIR="$BASEDIR/modulesets"
-alias jhbuild="python2.7 `which jhbuild`"
+
+function jhbuild() {
+  python2.7 "$(which jhbuild)" "$@"
+}
+export -f jhbuild
