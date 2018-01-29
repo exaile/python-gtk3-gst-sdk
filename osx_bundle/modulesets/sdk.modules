@@ -16,8 +16,8 @@
               href="http://cairographics.org/releases/"/>
   <repository type="tarball" name="cairosnapshots"
               href="http://cairographics.org/snapshots/"/>
-  <repository type='tarball' name='ftp.gnu.org' href="ftp://ftp.gnu.org/gnu/"/>
-  <repository type='tarball' name='ftp.gnupg.org' href="ftp://ftp.gnupg.org/" />
+  <repository type='tarball' name='ftp.gnu.org' href="https://ftp.gnu.org/"/>
+  <repository type='tarball' name='ftp.gnupg.org' href="https://www.gnupg.org/ftp/" />
   <repository type="tarball" name="chromaprint"
               href="https://bitbucket.org/acoustid/chromaprint/downloads/"/>
   <repository type="tarball" name="libgme"
@@ -28,8 +28,6 @@
           href="http://downloads.xiph.org/releases/"/>
   <repository type="tarball" name="mozilla"
           href="https://archive.mozilla.org/pub/"/>
-  <repository type="tarball" name="ftp.gnutls.org"
-          href="ftp://ftp.gnutls.org/"/>
   <repository type="tarball" name="gstreamer"
           href="http://gstreamer.freedesktop.org/src/"/>
   <repository type="tarball" name="sqlite" href="http://www.sqlite.org/"/>
@@ -174,7 +172,7 @@
 
   <autotools id="itstool" autogen-sh="configure">
     <branch module="itstool/itstool-${version}.tar.bz2" version="2.0.2"
-            hash="sha256:97c208b51da33e0b553e830b92655f8deb9132f8fbe9a646771f95c33226eb60"
+            hash="sha256:bf909fb59b11a646681a8534d5700fec99be83bb2c57badf8c1844512227033a"
             repo="itstool"/>
     <dependencies>
       <dep package="libxml2-python2"/>
@@ -535,7 +533,7 @@
     </dependencies>
   </autotools>
 
-  <autotools id="gobject-introspection" autogen-sh="configure" autogenargs="--with-python=python3">
+  <autotools id="gobject-introspection" autogen-sh="configure" autogenargs="--with-python=python">
     <branch module="gobject-introspection/1.54/gobject-introspection-${version}.tar.xz"
             version="1.54.1"
             hash="sha256:b88ded5e5f064ab58a93aadecd6d58db2ec9d970648534c63807d4f9a7bb877e">
@@ -548,7 +546,7 @@
     </dependencies>
   </autotools>
 
-  <distutils id="python-cairo" python3="0">
+  <distutils id="python-cairo">
     <branch repo="github-tar"
             version="1.15.3"
             module="pygobject/pycairo/releases/download/v${version}/pycairo-${version}.tar.gz"
@@ -556,7 +554,7 @@
             hash="sha256:8642e36cef66acbfc02760d2b40c716f5f183d073fb063ba28fd29a14044719d"/>
   </distutils>
 
-   <autotools id="python-gobject" autogenargs="--with-python=python3">
+   <autotools id="python-gobject" autogenargs="--with-python=python">
     <branch version="3.26.1" module="pygobject/3.26/pygobject-${version}.tar.xz"
             checkoutdir="python-gobject-${version}"
             hash="sha256:f5577b9b9c70cabb9a60d81b855d488b767c66f867432e7fb64aa7269b04d1a9"/>
@@ -568,7 +566,7 @@
     </dependencies>
   </autotools>
   
-  <distutils id="python-setuptools" python3="0">
+  <distutils id="python-setuptools">
     <branch repo="pypi.org"
             module="s/setuptools/setuptools-${version}.zip"
             version="36.6.0"
@@ -579,7 +577,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="dmgbuild" python3="0">
+  <distutils id="dmgbuild">
     <branch repo="pypi.org" checkoutdir="dmgbuild-${version}" module="d/dmgbuild/dmgbuild-${version}.tar.gz"
             version="1.3.2"
             hash="sha256:abc5d32cfc31e1585adba7920c4258c9dc3034d14196fc03e86dbe9ebce5b985"/>
@@ -592,7 +590,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-pycodestyle" python3="0">
+  <distutils id="python-pycodestyle">
     <branch repo="pypi.org"
             checkoutdir="python-pycodestyle-${version}"
             module="p/pycodestyle/pycodestyle-${version}.tar.gz"
@@ -603,7 +601,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-pyflakes" python3="0">
+  <distutils id="python-pyflakes">
     <branch repo="pypi.org"
             checkoutdir="python-pyflakes-${version}" module="p/pyflakes/pyflakes-${version}.tar.gz"
             version="1.6.0"
@@ -613,7 +611,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-six" python3="0">
+  <distutils id="python-six">
     <branch repo="pypi.org" checkoutdir="python-six-${version}"
             module="s/six/six-${version}.tar.gz"
             version="1.11.0"
@@ -623,7 +621,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-mac_alias" python3="0">
+  <distutils id="python-mac_alias">
     <branch repo="pypi.org"
             checkoutdir="python-mac_alias-${version}" module="m/mac_alias/mac_alias-${version}.tar.gz"
             version="2.0.6"
@@ -633,7 +631,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-biplist" python3="0">
+  <distutils id="python-biplist">
     <branch repo="pypi.org"
             checkoutdir="python-biplist-${version}" module="b/biplist/biplist-${version}.tar.gz"
             version="1.0.2"
@@ -643,7 +641,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-py" python3="0">
+  <distutils id="python-py">
     <branch repo="pypi.org"
             checkoutdir="python-py-${version}" module="p/py/py-${version}.tar.gz"
             version="1.4.34"
@@ -653,7 +651,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-pytest" python3="0">
+  <distutils id="python-pytest">
     <branch repo="pypi.org"
             checkoutdir="python-pytest-${version}"
             module="p/pytest/pytest-${version}.tar.gz"
@@ -665,7 +663,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-ds_store" python3="0">
+  <distutils id="python-ds_store">
     <branch repo="pypi.org"
             checkoutdir="python-ds_store-${version}" module="d/ds_store/ds_store-${version}.tar.gz"
             version="1.1.2"
@@ -677,7 +675,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-certifi" python3="0">
+  <distutils id="python-certifi">
     <branch repo="pypi.org"
           checkoutdir="python-certifi-${version}"
             module="c/certifi/certifi-${version}.tar.gz"
@@ -685,7 +683,7 @@
             hash="sha256:40523d2efb60523e113b44602298f0960e900388cf3bb6043f645cf57ea9e3f5"/>
   </distutils>
 
-  <distutils id="python-feedparser" python3="0">
+  <distutils id="python-feedparser">
     <branch repo="pypi.org" module="f/feedparser/feedparser-${version}.tar.bz2"
             checkoutdir="python-feedparser-${version}"
             version="5.2.1"/>
@@ -694,7 +692,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-mutagen" python3="0">
+  <distutils id="python-mutagen">
     <branch repo="pypi.org" checkoutdir="python-mutagen-${version}" module="m/mutagen/mutagen-${version}.tar.gz"
             version="1.38" hash="sha256:23990f70ae678c7b8df3fd59e2adbefa5fe392c36da8c71d2254b21c6cd78766"/>
     <dependencies>
@@ -702,7 +700,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-coverage" python3="0">
+  <distutils id="python-coverage">
     <branch repo="pypi.org" checkoutdir="python-coverage-${version}" module="c/coverage/coverage-${version}.tar.gz"
             version="4.4.1" hash="sha256:7a9c44400ee0f3b4546066e0710e1250fd75831adc02ab99dda176ad8726f424"/>
     <dependencies>
@@ -710,7 +708,7 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-musicbrainzngs" python3="0">
+  <distutils id="python-musicbrainzngs">
     <branch repo="github-tar"
             checkoutdir="python-musicbrainzngs-${version}"
             module="alastair/python-musicbrainzngs/archive/v${version}.tar.gz"
@@ -720,35 +718,35 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-pyobjc-core" python3="0">
+  <distutils id="python-pyobjc-core">
     <branch repo="pypi.org"
             checkoutdir="python-pyobjc-core-${version}"
             module="p/pyobjc-core/pyobjc-core-${version}.tar.gz"
-            version="3.2.1"
-            hash="sha256:848163845921e5a61e069ea42bab06ac73278f5a09b4e9cedd6a3eac6712ff2c"/>
+            version="4.1"
+            hash="md5:889b90f3dcee728b5d3d813986340660"/>
     <dependencies>
       <dep package="python-setuptools"/>
     </dependencies>
   </distutils>
 
-  <distutils id="python-pyobjc-framework-Cocoa" python3="0">
+  <distutils id="python-pyobjc-framework-Cocoa">
     <branch repo="pypi.org"
             checkoutdir="python-pyobjc-framework-Cocoa-${version}"
             module="p/pyobjc-framework-Cocoa/pyobjc-framework-Cocoa-${version}.tar.gz"
-            version="3.2.1"
-            hash="sha256:8215a528b552588f0024df03ef1c5f8edfa245301888c384f5b8c231f4c89431"/>
+            version="4.1"
+            hash="md5:37b559323b80a0fa27891a64dc69ca23"/>
     <dependencies>
       <dep package="python-setuptools"/>
       <dep package="python-pyobjc-core"/>
     </dependencies>
   </distutils>
 
-  <distutils id="python-pyobjc-framework-Quartz" python3="0">
+  <distutils id="python-pyobjc-framework-Quartz">
     <branch repo="pypi.org"
             checkoutdir="python-pyobjc-framework-Quartz-${version}"
             module="p/pyobjc-framework-Quartz/pyobjc-framework-Quartz-${version}.tar.gz"
-            version="3.2.1"
-            hash="sha256:328f6c3f2431be139fa54c166190d3cd4e1bae78243c7d0ace9a7be3fa3088ad"/>
+            version="4.1"
+            hash="md5:f0c5953050329ad2429dce649ca30145"/>
     <dependencies>
       <dep package="python-setuptools"/>
       <dep package="python-pyobjc-core"/>
@@ -756,12 +754,12 @@
     </dependencies>
   </distutils>
 
-  <distutils id="python-pyobjc" python3="0">
+  <distutils id="python-pyobjc">
     <branch repo="pypi.org"
             checkoutdir="python-pyobjc-${version}"
             module="p/pyobjc/pyobjc-${version}.tar.gz"
-            version="3.2.1"
-            hash="sha256:6cf373bf68f4f5e2cbc0ba7bc073e5f1b879f7454dcdcb8b07105512c37804ac"/>
+            version="4.1"
+            hash="md5:a66b68ff7921461d86de160e5acea134"/>
     <dependencies>
     <dep package="python-setuptools"/>
     <dep package="python-pyobjc-core"/>
@@ -1019,7 +1017,7 @@
 
   <autotools id="gnutls" autogen-sh="configure"
          autogenargs="--with-libgcrypt --without-p11-kit">
-    <branch repo="ftp.gnutls.org" version="3.5.16"
+    <branch repo="ftp.gnupg.org" version="3.5.16"
             module="gcrypt/gnutls/v3.5/gnutls-${version}.tar.xz"
             hash="sha256:0924dec90c37c05f49fec966eba3672dab4d336d879e5c06e06e13325cbfec25"/>
     <dependencies>
