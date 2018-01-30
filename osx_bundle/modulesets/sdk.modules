@@ -16,7 +16,7 @@
               href="http://cairographics.org/releases/"/>
   <repository type="tarball" name="cairosnapshots"
               href="http://cairographics.org/snapshots/"/>
-  <repository type='tarball' name='ftp.gnu.org' href="https://ftp.gnu.org/"/>
+  <repository type='tarball' name='ftp.gnu.org' href="https://ftp.gnu.org/gnu/"/>
   <repository type='tarball' name='ftp.gnupg.org' href="https://www.gnupg.org/ftp/" />
   <repository type="tarball" name="chromaprint"
               href="https://bitbucket.org/acoustid/chromaprint/downloads/"/>
