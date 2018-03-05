@@ -34,9 +34,9 @@ which SDK is used via the following environment variable:
 
     export JHBUILD_SDK_VERSION=10.13
 
-Just replace the SDK version with whatever version is present in your 
+Just replace the SDK version with whatever version is present in your
 `/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs`
-directory.
+or `/Library/Developer/CommandLineTools/SDKs` directory.
 
 Note: pyobjc isn't compatible with the 10.13 SDK at this time, so you may need
 to download an old SDK from https://github.com/phracker/MacOSX-SDKs
@@ -89,7 +89,7 @@ then this means that the SDK corresponding to your OS isn't installed. You can
 see the installed SDKs via:
 
   ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/
-  
+
 In jhbuildrc-custom, in 'setup_sdk(target="10.9", sdk_version="native")',
 replace 'native' with the latest SDK that is installed on your system.
 
@@ -100,7 +100,7 @@ try running::
   source env.sh
   jhbuild build -f python
 
-This has been commonly seen when trying to build itstool. 
+This has been commonly seen when trying to build itstool.
 
 | [0] https://developer.apple.com/xcode/downloads/
 | [1] https://git-scm.com/download/mac
