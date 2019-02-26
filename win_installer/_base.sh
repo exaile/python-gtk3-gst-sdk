@@ -96,7 +96,7 @@ function install_pydeps {
   # we will iterate over the requirements file and install one by one, which
   # guarantees the order
   while IFS='' read -r line; do
-    [ ! -z "$line" ] && build_pip install $line
+    if [ ! -z "$line" ]; then build_pip install $line; fi
   done < "$1"
 }
 
