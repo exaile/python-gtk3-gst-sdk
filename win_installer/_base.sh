@@ -82,9 +82,8 @@ function create_root {
 
 function install_deps {
   if [ -n "$1" ]; then
-    build_pacman --noconfirm -S $1
+    build_pacman --noconfirm -S --needed $1
   fi
-    
 }
 
 function install_pydeps {
