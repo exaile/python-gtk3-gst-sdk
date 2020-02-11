@@ -35,7 +35,7 @@ SDK_MISC="$BASEDIR"/misc
 source "$SDK_DATA"/sdk.config
 
 ARCH="${ARCH:-i686}"
-PYTHON_VERSION="2"
+PYTHON_VERSION="3"
 
 PYTHON_ID="python${PYTHON_VERSION}"
 if [ "${ARCH}" = "x86_64" ]; then
